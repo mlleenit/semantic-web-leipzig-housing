@@ -1,0 +1,113 @@
+@prefix lh: <https://example.org/leipzig-housing/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+lh:Connewitz_Apprentices_Affordability a lh:AffordabilityObservation ;
+    lh:forDistrict lh:Connewitz ;
+    lh:forGroup lh:Apprentices ;
+    lh:hasAffordabilityStatus "not_affordable" ;
+    lh:hasHousingStressScore 0.573 ;
+    lh:hasMonthlyIncome 900.0 ;
+    lh:hasWarmRent30sqm 516.0 .
+
+lh:Connewitz_CitizenBenefitRecipients_Affordability a lh:AffordabilityObservation ;
+    lh:forDistrict lh:Connewitz ;
+    lh:forGroup lh:CitizenBenefitRecipients ;
+    lh:hasAffordabilityStatus "not_affordable" ;
+    lh:hasHousingStressScore 0.917 ;
+    lh:hasMonthlyIncome 563.0 ;
+    lh:hasWarmRent30sqm 516.0 .
+
+lh:Connewitz_MedianEarners_Affordability a lh:AffordabilityObservation ;
+    lh:forDistrict lh:Connewitz ;
+    lh:forGroup lh:MedianEarners ;
+    lh:hasAffordabilityStatus "affordable" ;
+    lh:hasHousingStressScore 0.275 ;
+    lh:hasMonthlyIncome 1877.0 ;
+    lh:hasWarmRent30sqm 516.0 .
+
+lh:Connewitz_Students_Affordability a lh:AffordabilityObservation ;
+    lh:forDistrict lh:Connewitz ;
+    lh:forGroup lh:Students ;
+    lh:hasAffordabilityStatus "not_affordable" ;
+    lh:hasHousingStressScore 0.52 ;
+    lh:hasMonthlyIncome 992.0 ;
+    lh:hasWarmRent30sqm 516.0 .
+
+lh:Gruenau_Apprentices_Affordability a lh:AffordabilityObservation ;
+    lh:forDistrict lh:Gruenau ;
+    lh:forGroup lh:Apprentices ;
+    lh:hasAffordabilityStatus "critical" ;
+    lh:hasHousingStressScore 0.413 ;
+    lh:hasMonthlyIncome 900.0 ;
+    lh:hasWarmRent30sqm 372.0 .
+
+lh:Gruenau_CitizenBenefitRecipients_Affordability a lh:AffordabilityObservation ;
+    lh:forDistrict lh:Gruenau ;
+    lh:forGroup lh:CitizenBenefitRecipients ;
+    lh:hasAffordabilityStatus "not_affordable" ;
+    lh:hasHousingStressScore 0.661 ;
+    lh:hasMonthlyIncome 563.0 ;
+    lh:hasWarmRent30sqm 372.0 .
+
+lh:Gruenau_MedianEarners_Affordability a lh:AffordabilityObservation ;
+    lh:forDistrict lh:Gruenau ;
+    lh:forGroup lh:MedianEarners ;
+    lh:hasAffordabilityStatus "affordable" ;
+    lh:hasHousingStressScore 0.198 ;
+    lh:hasMonthlyIncome 1877.0 ;
+    lh:hasWarmRent30sqm 372.0 .
+
+lh:Gruenau_Students_Affordability a lh:AffordabilityObservation ;
+    lh:forDistrict lh:Gruenau ;
+    lh:forGroup lh:Students ;
+    lh:hasAffordabilityStatus "critical" ;
+    lh:hasHousingStressScore 0.375 ;
+    lh:hasMonthlyIncome 992.0 ;
+    lh:hasWarmRent30sqm 372.0 .
+
+lh:Plagwitz_Apprentices_Affordability a lh:AffordabilityObservation ;
+    lh:forDistrict lh:Plagwitz ;
+    lh:forGroup lh:Apprentices ;
+    lh:hasAffordabilityStatus "not_affordable" ;
+    lh:hasHousingStressScore 0.603 ;
+    lh:hasMonthlyIncome 900.0 ;
+    lh:hasWarmRent30sqm 543.0 .
+
+lh:Plagwitz_CitizenBenefitRecipients_Affordability a lh:AffordabilityObservation ;
+    lh:forDistrict lh:Plagwitz ;
+    lh:forGroup lh:CitizenBenefitRecipients ;
+    lh:hasAffordabilityStatus "not_affordable" ;
+    lh:hasHousingStressScore 0.964 ;
+    lh:hasMonthlyIncome 563.0 ;
+    lh:hasWarmRent30sqm 543.0 .
+
+lh:Plagwitz_MedianEarners_Affordability a lh:AffordabilityObservation ;
+    lh:forDistrict lh:Plagwitz ;
+    lh:forGroup lh:MedianEarners ;
+    lh:hasAffordabilityStatus "affordable" ;
+    lh:hasHousingStressScore 0.289 ;
+    lh:hasMonthlyIncome 1877.0 ;
+    lh:hasWarmRent30sqm 543.0 .
+
+lh:Plagwitz_Students_Affordability a lh:AffordabilityObservation ;
+    lh:forDistrict lh:Plagwitz ;
+    lh:forGroup lh:Students ;
+    lh:hasAffordabilityStatus "not_affordable" ;
+    lh:hasHousingStressScore 0.547 ;
+    lh:hasMonthlyIncome 992.0 ;
+    lh:hasWarmRent30sqm 543.0 .
+
+lh:Apprentices a lh:SocialGroup .
+
+lh:CitizenBenefitRecipients a lh:SocialGroup .
+
+lh:MedianEarners a lh:SocialGroup .
+
+lh:Students a lh:SocialGroup .
+
+lh:Connewitz a lh:District .
+
+lh:Gruenau a lh:District .
+
+lh:Plagwitz a lh:District .
+
