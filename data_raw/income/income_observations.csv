@@ -1,0 +1,5 @@
+observation_id,group_id,year,monthly_income_eur,source_id,notes
+income_students_2025,students,2025,992,dummy_source,Placeholder value for prototype
+income_apprentices_2025,apprentices,2025,900,dummy_source,Placeholder value for prototype
+income_citizen_benefit_2025,citizen_benefit,2025,563,dummy_source,Placeholder value for prototype
+income_median_earners_2025,median_earners,2025,1877,dummy_source,Placeholder value for prototype

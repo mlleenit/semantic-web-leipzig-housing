@@ -1,0 +1,260 @@
+from pathlib import Path
+from urllib.parse import quote
+
+import pandas as pd
+from rdflib import Graph, Literal, Namespace, RDF, RDFS, URIRef
+from rdflib.namespace import XSD, DCTERMS
+
+
+BASE = "https://example.org/leipzig-housing/"
+LH = Namespace(BASE)
+SCHEMA = Namespace("https://schema.org/")
+
+
+def uri(local_id: str) -> URIRef:
+    return URIRef(BASE + quote(str(local_id).strip().replace(" ", "_")))
+
+
+def add_decimal(graph: Graph, subject: URIRef, predicate: URIRef, value) -> None:
+    graph.add((subject, predicate, Literal(float(value), datatype=XSD.decimal)))
+
+
+def add_integer(graph: Graph, subject: URIRef, predicate: URIRef, value) -> None:
+    graph.add((subject, predicate, Literal(int(value), datatype=XSD.integer)))
+
+
+def main() -> None:
+    districts = pd.read_csv("data_raw/geo/districts.csv")
+    social_groups = pd.read_csv("data_raw/social/social_groups.csv")
+    incomes = pd.read_csv("data_raw/income/income_observations.csv")
+    rents = pd.read_csv("data_raw/rents/rent_observations.csv")
+    affordability = pd.read_csv("data_processed/affordability_observations.csv")
+    residential_locations = pd.read_csv("data_processed/official_residential_locations.csv")
+
+    output_dir = Path("rdf_output")
+    output_dir.mkdir(exist_ok=True)
+    output_file = output_dir / "leipzig_housing_graph.ttl"
+
+    g = Graph()
+
+    g.bind("lh", LH)
+    g.bind("rdf", RDF)
+    g.bind("rdfs", RDFS)
+    g.bind("xsd", XSD)
+    g.bind("dcterms", DCTERMS)
+    g.bind("schema", SCHEMA)
+
+    # Classes
+    classes = [
+        "District",
+        "SocialGroup",
+        "RentObservation",
+        "IncomeObservation",
+        "AffordabilityObservation",
+        "ResidentialLocationObservation",
+        "ResidentialLocationClass",
+        "DataSource",
+    ]
+
+    for class_name in classes:
+        class_uri = LH[class_name]
+        g.add((class_uri, RDF.type, RDFS.Class))
+        g.add((class_uri, RDFS.label, Literal(class_name, lang="en")))
+
+    # Properties
+    object_properties = [
+        "forDistrict",
+        "forGroup",
+        "basedOnSource",
+        "hasResidentialLocationClass",
+    ]
+
+    datatype_properties = [
+        "districtName",
+        "city",
+        "country",
+        "inYear",
+        "hasOfferRentPerSqm",
+        "hasFlatSizeSqm",
+        "hasUtilities",
+        "hasWarmRent",
+        "hasMonthlyIncome",
+        "hasHousingStressScore",
+        "hasAffordabilityStatus",
+        "streetName",
+        "houseNumber",
+        "hasLocationFactor",
+    ]
+
+    for prop in object_properties + datatype_properties:
+        prop_uri = LH[prop]
+        g.add((prop_uri, RDF.type, RDF.Property))
+        g.add((prop_uri, RDFS.label, Literal(prop, lang="en")))
+
+    # Data sources
+    source_wohnungsboerse = LH["source/wohnungsboerse_2026"]
+    source_dummy_income = LH["source/dummy_source"]
+    source_leipzig_mietspiegel = LH["source/leipzig_mietspiegel_2025_2027"]
+
+    sources = [
+        (
+            source_wohnungsboerse,
+            "Wohnungsboerse Leipzig Mietspiegel 2026",
+            "Publicly available offer rent data by Leipzig district, status April 2026.",
+        ),
+        (
+            source_dummy_income,
+            "Prototype income assumptions",
+            "Placeholder income values used for the first affordability prototype.",
+        ),
+        (
+            source_leipzig_mietspiegel,
+            "Leipziger Mietspiegel 2025-2027",
+            "Official qualified rent index and residential location classification by the City of Leipzig.",
+        ),
+    ]
+
+    for source_uri, title, description in sources:
+        g.add((source_uri, RDF.type, LH.DataSource))
+        g.add((source_uri, DCTERMS.title, Literal(title, lang="en")))
+        g.add((source_uri, DCTERMS.description, Literal(description, lang="en")))
+
+    # Districts
+    for _, row in districts.iterrows():
+        district = uri(f"district/{row['district_id']}")
+        g.add((district, RDF.type, LH.District))
+        g.add((district, RDFS.label, Literal(row["district_name"], lang="de")))
+        g.add((district, LH.districtName, Literal(row["district_name"], lang="de")))
+        g.add((district, LH.city, Literal(row["city"], lang="en")))
+        g.add((district, LH.country, Literal(row["country"], lang="en")))
+
+        if pd.notna(row.get("dbpedia_uri")) and str(row.get("dbpedia_uri")).strip():
+            g.add((district, RDFS.seeAlso, URIRef(str(row["dbpedia_uri"]).strip())))
+
+        if pd.notna(row.get("linked_geo_uri")) and str(row.get("linked_geo_uri")).strip():
+            g.add((district, RDFS.seeAlso, URIRef(str(row["linked_geo_uri"]).strip())))
+
+    # Social groups
+    for _, row in social_groups.iterrows():
+        group = uri(f"group/{row['group_id']}")
+        g.add((group, RDF.type, LH.SocialGroup))
+        g.add((group, RDFS.label, Literal(row["group_label_en"], lang="en")))
+        g.add((group, RDFS.label, Literal(row["group_label_de"], lang="de")))
+        g.add((group, DCTERMS.description, Literal(row["description"], lang="en")))
+
+    # Income observations
+    for _, row in incomes.iterrows():
+        obs = uri(f"income_observation/{row['observation_id']}")
+        group = uri(f"group/{row['group_id']}")
+        source = LH[f"source/{row['source_id']}"]
+
+        g.add((obs, RDF.type, LH.IncomeObservation))
+        g.add((obs, LH.forGroup, group))
+        add_integer(g, obs, LH.inYear, row["year"])
+        add_decimal(g, obs, LH.hasMonthlyIncome, row["monthly_income_eur"])
+        g.add((obs, LH.basedOnSource, source))
+
+        if pd.notna(row.get("notes")):
+            g.add((obs, RDFS.comment, Literal(str(row["notes"]), lang="en")))
+
+    # Rent observations
+    for _, row in rents.iterrows():
+        obs = uri(f"rent_observation/{row['observation_id']}")
+        district = uri(f"district/{row['district_id']}")
+        source = LH[f"source/{row['source_id']}"]
+
+        warm_rent = row["offer_rent_per_sqm"] * row["flat_size_sqm"] + row["utilities_eur"]
+
+        g.add((obs, RDF.type, LH.RentObservation))
+        g.add((obs, LH.forDistrict, district))
+        add_integer(g, obs, LH.inYear, row["year"])
+        add_decimal(g, obs, LH.hasOfferRentPerSqm, row["offer_rent_per_sqm"])
+        add_decimal(g, obs, LH.hasFlatSizeSqm, row["flat_size_sqm"])
+        add_decimal(g, obs, LH.hasUtilities, row["utilities_eur"])
+        add_decimal(g, obs, LH.hasWarmRent, warm_rent)
+        g.add((obs, LH.basedOnSource, source))
+
+        if pd.notna(row.get("notes")):
+            g.add((obs, RDFS.comment, Literal(str(row["notes"]), lang="en")))
+
+    # Affordability observations
+    for _, row in affordability.iterrows():
+        obs = uri(f"affordability_observation/{row['observation_id']}")
+        district = uri(f"district/{row['district_id']}")
+        group = uri(f"group/{row['group_id']}")
+        rent_source = LH[f"source/{row['rent_source_id']}"]
+        income_source = LH[f"source/{row['income_source_id']}"]
+
+        g.add((obs, RDF.type, LH.AffordabilityObservation))
+        g.add((obs, LH.forDistrict, district))
+        g.add((obs, LH.forGroup, group))
+        add_integer(g, obs, LH.inYear, row["year"])
+        add_decimal(g, obs, LH.hasOfferRentPerSqm, row["offer_rent_per_sqm"])
+        add_decimal(g, obs, LH.hasFlatSizeSqm, row["flat_size_sqm"])
+        add_decimal(g, obs, LH.hasUtilities, row["utilities_eur"])
+        add_decimal(g, obs, LH.hasWarmRent, row["warm_rent_eur"])
+        add_decimal(g, obs, LH.hasMonthlyIncome, row["monthly_income_eur"])
+        add_decimal(g, obs, LH.hasHousingStressScore, row["housing_stress_score"])
+        g.add((obs, LH.hasAffordabilityStatus, Literal(row["affordability_status"], lang="en")))
+        g.add((obs, LH.basedOnSource, rent_source))
+        g.add((obs, LH.basedOnSource, income_source))
+
+    # Residential location classes
+    for location_name, factor in (
+        residential_locations[["residential_location", "location_factor"]]
+        .drop_duplicates()
+        .sort_values("residential_location")
+        .itertuples(index=False)
+    ):
+        class_id = (
+            str(location_name)
+            .lower()
+            .replace("ä", "ae")
+            .replace("ö", "oe")
+            .replace("ü", "ue")
+            .replace("ß", "ss")
+            .replace(" - ", "_")
+            .replace(" ", "_")
+            .replace("-", "_")
+        )
+
+        location_class = uri(f"residential_location_class/{class_id}")
+
+        g.add((location_class, RDF.type, LH.ResidentialLocationClass))
+        g.add((location_class, RDFS.label, Literal(str(location_name), lang="de")))
+        add_decimal(g, location_class, LH.hasLocationFactor, factor)
+        g.add((location_class, LH.basedOnSource, source_leipzig_mietspiegel))
+
+    # Residential location observations
+    for idx, row in residential_locations.iterrows():
+        class_id = (
+            str(row["residential_location"])
+            .lower()
+            .replace("ä", "ae")
+            .replace("ö", "oe")
+            .replace("ü", "ue")
+            .replace("ß", "ss")
+            .replace(" - ", "_")
+            .replace(" ", "_")
+            .replace("-", "_")
+        )
+
+        obs = uri(f"residential_location_observation/{idx + 1}")
+        location_class = uri(f"residential_location_class/{class_id}")
+
+        g.add((obs, RDF.type, LH.ResidentialLocationObservation))
+        g.add((obs, LH.streetName, Literal(row["street_name"], lang="de")))
+        g.add((obs, LH.houseNumber, Literal(str(row["house_number"]))))
+        g.add((obs, LH.hasResidentialLocationClass, location_class))
+        add_decimal(g, obs, LH.hasLocationFactor, row["location_factor"])
+        g.add((obs, LH.basedOnSource, source_leipzig_mietspiegel))
+
+    g.serialize(destination=output_file, format="turtle")
+
+    print("RDF graph created")
+    print("Triples:", len(g))
+    print("Saved:", output_file)
+
+
+if __name__ == "__main__":
+    main()
