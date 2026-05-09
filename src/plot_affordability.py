@@ -13,72 +13,71 @@ def main() -> None:
 
     df = pd.read_csv(INPUT_FILE)
 
-    # Plot 1: status counts by social group
+    # Plot 1: affordability status counts by income scenario
     status_counts = (
-        df.groupby(["group_id", "affordability_status"])
+        df.groupby(["income_scenario_id", "affordability_status"])
         .size()
         .unstack(fill_value=0)
     )
 
     ax = status_counts.plot(kind="bar", figsize=(10, 6))
-    ax.set_title("Affordability status counts by social group")
-    ax.set_xlabel("Social group")
+    ax.set_title("Affordability status counts by income scenario")
+    ax.set_xlabel("Income scenario")
     ax.set_ylabel("Number of Leipzig districts")
     ax.legend(title="Affordability status")
+    plt.xticks(rotation=0)
     plt.tight_layout()
-    plt.savefig(OUTPUT_DIR / "affordability_status_by_group.png", dpi=300)
+    plt.savefig(OUTPUT_DIR / "affordability_status_by_income_scenario.png", dpi=300)
     plt.close()
 
-    # Plot 2: housing stress for students by district
-    students = df[df["group_id"] == "students"].sort_values(
-        "housing_stress_score", ascending=False
+    # Plot 2: direct comparison of housing stress scores by district
+    comparison = df.pivot(
+        index="district_id",
+        columns="income_scenario_id",
+        values="housing_stress_score",
     )
 
-    ax = students.plot(
-        kind="bar",
-        x="district_id",
-        y="housing_stress_score",
-        figsize=(16, 6),
-        legend=False,
-    )
+    comparison = comparison.sort_values("bafog_only", ascending=False)
+
+    ax = comparison.plot(kind="bar", figsize=(18, 7))
     ax.axhline(0.30, linestyle="--", label="affordable threshold")
     ax.axhline(0.45, linestyle="--", label="critical threshold")
     ax.axhline(0.60, linestyle="--", label="structural exclusion threshold")
-    ax.set_title("Housing stress score for students by Leipzig district")
+    ax.set_title("Housing stress score by district and income scenario")
     ax.set_xlabel("District")
     ax.set_ylabel("Warm rent / monthly income")
     ax.legend()
     plt.xticks(rotation=90)
     plt.tight_layout()
-    plt.savefig(OUTPUT_DIR / "students_housing_stress_by_district.png", dpi=300)
+    plt.savefig(OUTPUT_DIR / "housing_stress_by_district_and_scenario.png", dpi=300)
     plt.close()
 
-    # Plot 3: top 15 highest housing stress observations
-    top15 = df.sort_values("housing_stress_score", ascending=False).head(15)
-    top15 = top15.copy()
-    top15["label"] = top15["district_id"] + " / " + top15["group_id"]
-
-    ax = top15.plot(
-        kind="bar",
-        x="label",
-        y="housing_stress_score",
-        figsize=(14, 6),
-        legend=False,
+    # Plot 3: top 15 highest BAföG-only stress districts with Minijob comparison
+    top15_districts = (
+        df[df["income_scenario_id"] == "bafog_only"]
+        .sort_values("housing_stress_score", ascending=False)
+        .head(15)["district_id"]
     )
+
+    top15_comparison = comparison.loc[top15_districts]
+
+    ax = top15_comparison.plot(kind="bar", figsize=(14, 6))
+    ax.axhline(0.30, linestyle="--", label="affordable threshold")
+    ax.axhline(0.45, linestyle="--", label="critical threshold")
     ax.axhline(0.60, linestyle="--", label="structural exclusion threshold")
-    ax.set_title("Top 15 highest housing stress observations")
-    ax.set_xlabel("District / social group")
+    ax.set_title("Top 15 highest student housing stress districts: BAföG vs Minijob")
+    ax.set_xlabel("District")
     ax.set_ylabel("Warm rent / monthly income")
     ax.legend()
     plt.xticks(rotation=75, ha="right")
     plt.tight_layout()
-    plt.savefig(OUTPUT_DIR / "top15_housing_stress.png", dpi=300)
+    plt.savefig(OUTPUT_DIR / "top15_bafog_vs_minijob.png", dpi=300)
     plt.close()
 
     print("Saved plots:")
-    print(OUTPUT_DIR / "affordability_status_by_group.png")
-    print(OUTPUT_DIR / "students_housing_stress_by_district.png")
-    print(OUTPUT_DIR / "top15_housing_stress.png")
+    print(OUTPUT_DIR / "affordability_status_by_income_scenario.png")
+    print(OUTPUT_DIR / "housing_stress_by_district_and_scenario.png")
+    print(OUTPUT_DIR / "top15_bafog_vs_minijob.png")
 
 
 if __name__ == "__main__":

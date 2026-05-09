@@ -29,33 +29,38 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 """
 
     query_1 = prefixes + """
-SELECT ?districtLabel ?stress ?status
+SELECT ?districtLabel ?scenarioLabel ?warmRent ?income ?stress ?status
 WHERE {
     ?obs a lh:AffordabilityObservation ;
          lh:forDistrict ?district ;
          lh:forGroup <https://example.org/leipzig-housing/group/students> ;
+         lh:forIncomeScenario ?scenario ;
+         lh:hasWarmRent ?warmRent ;
+         lh:hasMonthlyIncome ?income ;
          lh:hasHousingStressScore ?stress ;
          lh:hasAffordabilityStatus ?status .
 
     ?district rdfs:label ?districtLabel .
+    ?scenario rdfs:label ?scenarioLabel .
 
     FILTER(LANG(?districtLabel) = "de")
 }
-ORDER BY DESC(?stress)
-LIMIT 10
+ORDER BY ?districtLabel ?scenarioLabel
 """
 
     query_2 = prefixes + """
-SELECT ?districtLabel ?warmRent ?stress ?status
+SELECT ?districtLabel ?scenarioLabel ?warmRent ?stress ?status
 WHERE {
     ?obs a lh:AffordabilityObservation ;
          lh:forDistrict ?district ;
          lh:forGroup <https://example.org/leipzig-housing/group/students> ;
+         lh:forIncomeScenario ?scenario ;
          lh:hasWarmRent ?warmRent ;
          lh:hasHousingStressScore ?stress ;
          lh:hasAffordabilityStatus ?status .
 
     ?district rdfs:label ?districtLabel .
+    ?scenario rdfs:label ?scenarioLabel .
 
     FILTER(LANG(?districtLabel) = "de")
     FILTER(?stress > 0.45)
@@ -64,17 +69,45 @@ ORDER BY DESC(?stress)
 """
 
     query_3 = prefixes + """
-SELECT ?status (COUNT(?obs) AS ?count)
+SELECT ?districtLabel ?stressBase ?statusBase ?stressWithMinijob ?statusWithMinijob
 WHERE {
-    ?obs a lh:AffordabilityObservation ;
+    ?baseObs a lh:AffordabilityObservation ;
+         lh:forDistrict ?district ;
          lh:forGroup <https://example.org/leipzig-housing/group/students> ;
-         lh:hasAffordabilityStatus ?status .
+         lh:forIncomeScenario <https://example.org/leipzig-housing/income_scenario/bafog_only> ;
+         lh:hasHousingStressScore ?stressBase ;
+         lh:hasAffordabilityStatus ?statusBase .
+
+    ?minijobObs a lh:AffordabilityObservation ;
+         lh:forDistrict ?district ;
+         lh:forGroup <https://example.org/leipzig-housing/group/students> ;
+         lh:forIncomeScenario <https://example.org/leipzig-housing/income_scenario/bafog_plus_minijob> ;
+         lh:hasHousingStressScore ?stressWithMinijob ;
+         lh:hasAffordabilityStatus ?statusWithMinijob .
+
+    ?district rdfs:label ?districtLabel .
+
+    FILTER(LANG(?districtLabel) = "de")
 }
-GROUP BY ?status
-ORDER BY DESC(?count)
+ORDER BY DESC(?stressBase)
+LIMIT 15
 """
 
     query_4 = prefixes + """
+SELECT ?scenarioLabel ?status (COUNT(?obs) AS ?count)
+WHERE {
+    ?obs a lh:AffordabilityObservation ;
+         lh:forGroup <https://example.org/leipzig-housing/group/students> ;
+         lh:forIncomeScenario ?scenario ;
+         lh:hasAffordabilityStatus ?status .
+
+    ?scenario rdfs:label ?scenarioLabel .
+}
+GROUP BY ?scenarioLabel ?status
+ORDER BY ?scenarioLabel DESC(?count)
+"""
+
+    query_5 = prefixes + """
 SELECT ?locationClassLabel ?factor (COUNT(?obs) AS ?addressCount)
 WHERE {
     ?obs a lh:ResidentialLocationObservation ;
@@ -89,10 +122,11 @@ GROUP BY ?locationClassLabel ?factor
 ORDER BY DESC(?addressCount)
 """
 
-    run_query(g, "Query 1: Top 10 highest student housing stress districts", query_1)
-    run_query(g, "Query 2: Districts above critical threshold for students", query_2)
-    run_query(g, "Query 3: Affordability status counts for students", query_3)
-    run_query(g, "Query 4: Official residential location classes by address count", query_4)
+    run_query(g, "Query 1: Student affordability by district and income scenario", query_1)
+    run_query(g, "Query 2: Critical districts by scenario", query_2)
+    run_query(g, "Query 3: BAföG vs Minijob comparison (MOST IMPORTANT)", query_3)
+    run_query(g, "Query 4: Status distribution per scenario", query_4)
+    run_query(g, "Query 5: Residential location classes", query_5)
 
 
 if __name__ == "__main__":

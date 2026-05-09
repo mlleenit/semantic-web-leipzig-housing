@@ -1,2 +1,3 @@
-observation_id,group_id,year,monthly_income_eur,source_id,notes
-income_students_2025,students,2025,992,bafoeg_2024,"BAföG maximum monthly need rate for independently living students."
+observation_id,group_id,income_scenario_id,year,monthly_income_eur,source_id,notes
+income_students_bafog_only_2025,students,bafog_only,2025,992,bafoeg_2024,"BAföG maximum monthly need rate for independently living students."
+income_students_bafog_plus_minijob_2026,students,bafog_plus_minijob,2026,1595,bafoeg_2024_minijob_2026,"BAföG maximum monthly need rate for independently living students plus income from a minijob (603 EUR/month)."

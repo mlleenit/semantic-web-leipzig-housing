@@ -28,6 +28,31 @@ def main() -> None:
     rents = pd.read_csv(rents_path)
     incomes = pd.read_csv(income_path)
 
+    required_rent_columns = {
+        "district_id",
+        "year",
+        "offer_rent_per_sqm",
+        "flat_size_sqm",
+        "utilities_eur",
+        "source_id",
+    }
+
+    required_income_columns = {
+        "group_id",
+        "income_scenario_id",
+        "monthly_income_eur",
+        "source_id",
+    }
+
+    missing_rent_columns = required_rent_columns - set(rents.columns)
+    missing_income_columns = required_income_columns - set(incomes.columns)
+
+    if missing_rent_columns:
+        raise ValueError(f"Missing rent columns: {sorted(missing_rent_columns)}")
+
+    if missing_income_columns:
+        raise ValueError(f"Missing income columns: {sorted(missing_income_columns)}")
+
     records = []
 
     for _, rent_row in rents.iterrows():
@@ -46,10 +71,12 @@ def main() -> None:
                         f"affordability_"
                         f"{rent_row['district_id']}_"
                         f"{income_row['group_id']}_"
+                        f"{income_row['income_scenario_id']}_"
                         f"{rent_row['year']}"
                     ),
                     "district_id": rent_row["district_id"],
                     "group_id": income_row["group_id"],
+                    "income_scenario_id": income_row["income_scenario_id"],
                     "year": int(rent_row["year"]),
                     "offer_rent_per_sqm": round(rent_row["offer_rent_per_sqm"], 2),
                     "flat_size_sqm": int(rent_row["flat_size_sqm"]),

@@ -1,0 +1,186 @@
+Graph loaded
+Triples: 442338
+
+================================================================================
+Query 1: Student affordability by district and income scenario
+================================================================================
+Althen-Kleinpösna | bafog_only | 388.2 | 992.0 | 0.391 | critical
+Althen-Kleinpösna | bafog_plus_minijob | 388.2 | 1595.0 | 0.243 | affordable
+Altlindenau | bafog_only | 428.7 | 992.0 | 0.432 | critical
+Altlindenau | bafog_plus_minijob | 428.7 | 1595.0 | 0.269 | affordable
+Anger-Crottendorf | bafog_only | 413.4 | 992.0 | 0.417 | critical
+Anger-Crottendorf | bafog_plus_minijob | 413.4 | 1595.0 | 0.259 | affordable
+Baalsdorf | bafog_only | 399.3 | 992.0 | 0.403 | critical
+Baalsdorf | bafog_plus_minijob | 399.3 | 1595.0 | 0.25 | affordable
+Burghausen-Rückmarsdorf | bafog_only | 438.0 | 992.0 | 0.442 | critical
+Burghausen-Rückmarsdorf | bafog_plus_minijob | 438.0 | 1595.0 | 0.275 | affordable
+Böhlitz-Ehrenberg | bafog_only | 414.9 | 992.0 | 0.418 | critical
+Böhlitz-Ehrenberg | bafog_plus_minijob | 414.9 | 1595.0 | 0.26 | affordable
+Connewitz | bafog_only | 438.6 | 992.0 | 0.442 | critical
+Connewitz | bafog_plus_minijob | 438.6 | 1595.0 | 0.275 | affordable
+Dölitz-Dösen | bafog_only | 402.6 | 992.0 | 0.406 | critical
+Dölitz-Dösen | bafog_plus_minijob | 402.6 | 1595.0 | 0.252 | affordable
+Engelsdorf | bafog_only | 444.6 | 992.0 | 0.448 | critical
+Engelsdorf | bafog_plus_minijob | 444.6 | 1595.0 | 0.279 | affordable
+Eutritzsch | bafog_only | 449.7 | 992.0 | 0.453 | not_affordable
+Eutritzsch | bafog_plus_minijob | 449.7 | 1595.0 | 0.282 | affordable
+Gohlis-Mitte | bafog_only | 432.9 | 992.0 | 0.436 | critical
+Gohlis-Mitte | bafog_plus_minijob | 432.9 | 1595.0 | 0.271 | affordable
+Gohlis-Nord | bafog_only | 403.2 | 992.0 | 0.406 | critical
+Gohlis-Nord | bafog_plus_minijob | 403.2 | 1595.0 | 0.253 | affordable
+Gohlis-Süd | bafog_only | 442.2 | 992.0 | 0.446 | critical
+Gohlis-Süd | bafog_plus_minijob | 442.2 | 1595.0 | 0.277 | affordable
+Großzschocher | bafog_only | 407.1 | 992.0 | 0.41 | critical
+Großzschocher | bafog_plus_minijob | 407.1 | 1595.0 | 0.255 | affordable
+Grünau-Mitte | bafog_only | 370.5 | 992.0 | 0.373 | critical
+Grünau-Mitte | bafog_plus_minijob | 370.5 | 1595.0 | 0.232 | affordable
+Grünau-Nord | bafog_only | 368.7 | 992.0 | 0.372 | critical
+Grünau-Nord | bafog_plus_minijob | 368.7 | 1595.0 | 0.231 | affordable
+Grünau-Ost | bafog_only | 358.2 | 992.0 | 0.361 | critical
+Grünau-Ost | bafog_plus_minijob | 358.2 | 1595.0 | 0.225 | affordable
+Grünau-Siedlung | bafog_only | 351.9 | 992.0 | 0.355 | critical
+Grünau-Siedlung | bafog_plus_minijob | 351.9 | 1595.0 | 0.221 | affordable
+Hartmannsdorf-Knautnaundorf | bafog_only | 457.2 | 992.0 | 0.461 | not_affordable
+Hartmannsdorf-Knautnaundorf | bafog_plus_minijob | 457.2 | 1595.0 | 0.287 | affordable
+Heiterblick | bafog_only | 385.2 | 992.0 | 0.388 | critical
+Heiterblick | bafog_plus_minijob | 385.2 | 1595.0 | 0.242 | affordable
+Holzhausen | bafog_only | 420.6 | 992.0 | 0.424 | critical
+Holzhausen | bafog_plus_minijob | 420.6 | 1595.0 | 0.264 | affordable
+Kleinzschocher | bafog_only | 417.0 | 992.0 | 0.42 | critical
+Kleinzschocher | bafog_plus_minijob | 417.0 | 1595.0 | 0.261 | affordable
+Knautkleeberg-Knauthain | bafog_only | 398.4 | 992.0 | 0.402 | critical
+Knautkleeberg-Knauthain | bafog_plus_minijob | 398.4 | 1595.0 | 0.25 | affordable
+Lausen-Grünau | bafog_only | 382.8 | 992.0 | 0.386 | critical
+Lausen-Grünau | bafog_plus_minijob | 382.8 | 1595.0 | 0.24 | affordable
+Leutzsch | bafog_only | 432.3 | 992.0 | 0.436 | critical
+Leutzsch | bafog_plus_minijob | 432.3 | 1595.0 | 0.271 | affordable
+Liebertwolkwitz | bafog_only | 402.9 | 992.0 | 0.406 | critical
+Liebertwolkwitz | bafog_plus_minijob | 402.9 | 1595.0 | 0.253 | affordable
+Lindenau | bafog_only | 422.7 | 992.0 | 0.426 | critical
+Lindenau | bafog_plus_minijob | 422.7 | 1595.0 | 0.265 | affordable
+Lindenthal | bafog_only | 406.2 | 992.0 | 0.409 | critical
+Lindenthal | bafog_plus_minijob | 406.2 | 1595.0 | 0.255 | affordable
+Lößnig | bafog_only | 375.9 | 992.0 | 0.379 | critical
+Lößnig | bafog_plus_minijob | 375.9 | 1595.0 | 0.236 | affordable
+Lützschena-Stahmeln | bafog_only | 376.2 | 992.0 | 0.379 | critical
+Lützschena-Stahmeln | bafog_plus_minijob | 376.2 | 1595.0 | 0.236 | affordable
+Marienbrunn | bafog_only | 421.2 | 992.0 | 0.425 | critical
+Marienbrunn | bafog_plus_minijob | 421.2 | 1595.0 | 0.264 | affordable
+Meusdorf | bafog_only | 431.7 | 992.0 | 0.435 | critical
+Meusdorf | bafog_plus_minijob | 431.7 | 1595.0 | 0.271 | affordable
+Miltitz | bafog_only | 424.2 | 992.0 | 0.428 | critical
+Miltitz | bafog_plus_minijob | 424.2 | 1595.0 | 0.266 | affordable
+Mockau-Nord | bafog_only | 396.9 | 992.0 | 0.4 | critical
+Mockau-Nord | bafog_plus_minijob | 396.9 | 1595.0 | 0.249 | affordable
+Mockau-Süd | bafog_only | 414.0 | 992.0 | 0.417 | critical
+Mockau-Süd | bafog_plus_minijob | 414.0 | 1595.0 | 0.26 | affordable
+Möckern | bafog_only | 438.9 | 992.0 | 0.442 | critical
+Möckern | bafog_plus_minijob | 438.9 | 1595.0 | 0.275 | affordable
+Mölkau | bafog_only | 436.8 | 992.0 | 0.44 | critical
+Mölkau | bafog_plus_minijob | 436.8 | 1595.0 | 0.274 | affordable
+Neulindenau | bafog_only | 462.9 | 992.0 | 0.467 | not_affordable
+Neulindenau | bafog_plus_minijob | 462.9 | 1595.0 | 0.29 | affordable
+Neustadt-Neuschönefeld | bafog_only | 443.1 | 992.0 | 0.447 | critical
+Neustadt-Neuschönefeld | bafog_plus_minijob | 443.1 | 1595.0 | 0.278 | affordable
+Paunsdorf | bafog_only | 387.9 | 992.0 | 0.391 | critical
+Paunsdorf | bafog_plus_minijob | 387.9 | 1595.0 | 0.243 | affordable
+Plagwitz | bafog_only | 441.6 | 992.0 | 0.445 | critical
+Plagwitz | bafog_plus_minijob | 441.6 | 1595.0 | 0.277 | affordable
+Plaußig-Portitz | bafog_only | 425.1 | 992.0 | 0.429 | critical
+Plaußig-Portitz | bafog_plus_minijob | 425.1 | 1595.0 | 0.267 | affordable
+Probstheida | bafog_only | 422.1 | 992.0 | 0.426 | critical
+Probstheida | bafog_plus_minijob | 422.1 | 1595.0 | 0.265 | affordable
+Reudnitz-Thonberg | bafog_only | 444.0 | 992.0 | 0.448 | critical
+Reudnitz-Thonberg | bafog_plus_minijob | 444.0 | 1595.0 | 0.278 | affordable
+Schleußig | bafog_only | 423.9 | 992.0 | 0.427 | critical
+Schleußig | bafog_plus_minijob | 423.9 | 1595.0 | 0.266 | affordable
+Schönau | bafog_only | 356.1 | 992.0 | 0.359 | critical
+Schönau | bafog_plus_minijob | 356.1 | 1595.0 | 0.223 | affordable
+Schönefeld-Abtnaundorf | bafog_only | 403.8 | 992.0 | 0.407 | critical
+Schönefeld-Abtnaundorf | bafog_plus_minijob | 403.8 | 1595.0 | 0.253 | affordable
+Schönefeld-Ost | bafog_only | 378.0 | 992.0 | 0.381 | critical
+Schönefeld-Ost | bafog_plus_minijob | 378.0 | 1595.0 | 0.237 | affordable
+Seehausen | bafog_only | 445.2 | 992.0 | 0.449 | critical
+Seehausen | bafog_plus_minijob | 445.2 | 1595.0 | 0.279 | affordable
+Sellerhausen-Stünz | bafog_only | 419.4 | 992.0 | 0.423 | critical
+Sellerhausen-Stünz | bafog_plus_minijob | 419.4 | 1595.0 | 0.263 | affordable
+Stötteritz | bafog_only | 445.5 | 992.0 | 0.449 | critical
+Stötteritz | bafog_plus_minijob | 445.5 | 1595.0 | 0.279 | affordable
+Südvorstadt | bafog_only | 438.6 | 992.0 | 0.442 | critical
+Südvorstadt | bafog_plus_minijob | 438.6 | 1595.0 | 0.275 | affordable
+Thekla | bafog_only | 389.7 | 992.0 | 0.393 | critical
+Thekla | bafog_plus_minijob | 389.7 | 1595.0 | 0.244 | affordable
+Volkmarsdorf | bafog_only | 420.3 | 992.0 | 0.424 | critical
+Volkmarsdorf | bafog_plus_minijob | 420.3 | 1595.0 | 0.264 | affordable
+Wahren | bafog_only | 394.5 | 992.0 | 0.398 | critical
+Wahren | bafog_plus_minijob | 394.5 | 1595.0 | 0.247 | affordable
+Wiederitzsch | bafog_only | 411.6 | 992.0 | 0.415 | critical
+Wiederitzsch | bafog_plus_minijob | 411.6 | 1595.0 | 0.258 | affordable
+Zentrum | bafog_only | 462.9 | 992.0 | 0.467 | not_affordable
+Zentrum | bafog_plus_minijob | 462.9 | 1595.0 | 0.29 | affordable
+Zentrum-Nord | bafog_only | 495.0 | 992.0 | 0.499 | not_affordable
+Zentrum-Nord | bafog_plus_minijob | 495.0 | 1595.0 | 0.31 | critical
+Zentrum-Nordwest | bafog_only | 468.9 | 992.0 | 0.473 | not_affordable
+Zentrum-Nordwest | bafog_plus_minijob | 468.9 | 1595.0 | 0.294 | affordable
+Zentrum-Ost | bafog_only | 513.3 | 992.0 | 0.517 | not_affordable
+Zentrum-Ost | bafog_plus_minijob | 513.3 | 1595.0 | 0.322 | critical
+Zentrum-Süd | bafog_only | 473.4 | 992.0 | 0.477 | not_affordable
+Zentrum-Süd | bafog_plus_minijob | 473.4 | 1595.0 | 0.297 | affordable
+Zentrum-Südost | bafog_only | 502.8 | 992.0 | 0.507 | not_affordable
+Zentrum-Südost | bafog_plus_minijob | 502.8 | 1595.0 | 0.315 | critical
+Zentrum-West | bafog_only | 474.3 | 992.0 | 0.478 | not_affordable
+Zentrum-West | bafog_plus_minijob | 474.3 | 1595.0 | 0.297 | affordable
+
+================================================================================
+Query 2: Critical districts by scenario
+================================================================================
+Zentrum-Ost | bafog_only | 513.3 | 0.517 | not_affordable
+Zentrum-Südost | bafog_only | 502.8 | 0.507 | not_affordable
+Zentrum-Nord | bafog_only | 495.0 | 0.499 | not_affordable
+Zentrum-West | bafog_only | 474.3 | 0.478 | not_affordable
+Zentrum-Süd | bafog_only | 473.4 | 0.477 | not_affordable
+Zentrum-Nordwest | bafog_only | 468.9 | 0.473 | not_affordable
+Neulindenau | bafog_only | 462.9 | 0.467 | not_affordable
+Zentrum | bafog_only | 462.9 | 0.467 | not_affordable
+Hartmannsdorf-Knautnaundorf | bafog_only | 457.2 | 0.461 | not_affordable
+Eutritzsch | bafog_only | 449.7 | 0.453 | not_affordable
+
+================================================================================
+Query 3: BAföG vs Minijob comparison (MOST IMPORTANT)
+================================================================================
+Zentrum-Ost | 0.517 | not_affordable | 0.322 | critical
+Zentrum-Südost | 0.507 | not_affordable | 0.315 | critical
+Zentrum-Nord | 0.499 | not_affordable | 0.31 | critical
+Zentrum-West | 0.478 | not_affordable | 0.297 | affordable
+Zentrum-Süd | 0.477 | not_affordable | 0.297 | affordable
+Zentrum-Nordwest | 0.473 | not_affordable | 0.294 | affordable
+Neulindenau | 0.467 | not_affordable | 0.29 | affordable
+Zentrum | 0.467 | not_affordable | 0.29 | affordable
+Hartmannsdorf-Knautnaundorf | 0.461 | not_affordable | 0.287 | affordable
+Eutritzsch | 0.453 | not_affordable | 0.282 | affordable
+Seehausen | 0.449 | critical | 0.279 | affordable
+Stötteritz | 0.449 | critical | 0.279 | affordable
+Engelsdorf | 0.448 | critical | 0.279 | affordable
+Reudnitz-Thonberg | 0.448 | critical | 0.278 | affordable
+Neustadt-Neuschönefeld | 0.447 | critical | 0.278 | affordable
+
+================================================================================
+Query 4: Status distribution per scenario
+================================================================================
+bafog_only | critical | 53
+bafog_only | not_affordable | 10
+bafog_plus_minijob | affordable | 60
+bafog_plus_minijob | critical | 3
+
+================================================================================
+Query 5: Residential location classes
+================================================================================
+mittlere Lage | 1.0 | 31836
+einfache Lage | 0.976 | 25233
+gute Lage | 1.051 | 10000
+Innenstadt - gute Lage | 1.1 | 2554
+sehr gute Lage | 1.061 | 1643
+Innenstadt - sehr gute Lage | 1.136 | 770
+Kerngebietslage | 1.147 | 732
+Innenstadt - einfache Lage | 1.1 | 286
+Innenstadt - mittlere Lage | 1.1 | 207

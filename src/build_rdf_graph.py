@@ -48,6 +48,7 @@ def main() -> None:
     classes = [
         "District",
         "SocialGroup",
+        "IncomeScenario",
         "RentObservation",
         "IncomeObservation",
         "AffordabilityObservation",
@@ -65,6 +66,7 @@ def main() -> None:
     object_properties = [
         "forDistrict",
         "forGroup",
+        "forIncomeScenario",
         "basedOnSource",
         "hasResidentialLocationClass",
     ]
@@ -92,23 +94,24 @@ def main() -> None:
         g.add((prop_uri, RDFS.label, Literal(prop, lang="en")))
 
     # Data sources
-    source_wohnungsboerse = LH["source/wohnungsboerse_2026"]
-    source_dummy_income = LH["source/dummy_source"]
-    source_leipzig_mietspiegel = LH["source/leipzig_mietspiegel_2025_2027"]
-
     sources = [
         (
-            source_wohnungsboerse,
+            LH["source/wohnungsboerse_2026"],
             "Wohnungsboerse Leipzig Mietspiegel 2026",
             "Publicly available offer rent data by Leipzig district, status April 2026.",
         ),
         (
-            source_dummy_income,
-            "Prototype income assumptions",
-            "Placeholder income values used for the first affordability prototype.",
+            LH["source/bafoeg_2024"],
+            "BAföG maximum support rate",
+            "Federal student support rate used as income proxy for independently living students.",
         ),
         (
-            source_leipzig_mietspiegel,
+            LH["source/bafoeg_2024_minijob_2026"],
+            "BAföG plus Minijob income scenario",
+            "Combined income scenario using BAföG maximum support rate and the 2026 Minijob earnings threshold.",
+        ),
+        (
+            LH["source/leipzig_mietspiegel_2025_2027"],
             "Leipziger Mietspiegel 2025-2027",
             "Official qualified rent index and residential location classification by the City of Leipzig.",
         ),
@@ -142,20 +145,28 @@ def main() -> None:
         g.add((group, RDFS.label, Literal(row["group_label_de"], lang="de")))
         g.add((group, DCTERMS.description, Literal(row["description"], lang="en")))
 
+    # Income scenarios
+    for scenario_id in incomes["income_scenario_id"].dropna().unique():
+        scenario = uri(f"income_scenario/{scenario_id}")
+        g.add((scenario, RDF.type, LH.IncomeScenario))
+        g.add((scenario, RDFS.label, Literal(str(scenario_id), lang="en")))
+
     # Income observations
     for _, row in incomes.iterrows():
         obs = uri(f"income_observation/{row['observation_id']}")
         group = uri(f"group/{row['group_id']}")
+        scenario = uri(f"income_scenario/{row['income_scenario_id']}")
         source = LH[f"source/{row['source_id']}"]
 
         g.add((obs, RDF.type, LH.IncomeObservation))
         g.add((obs, LH.forGroup, group))
+        g.add((obs, LH.forIncomeScenario, scenario))
         add_integer(g, obs, LH.inYear, row["year"])
         add_decimal(g, obs, LH.hasMonthlyIncome, row["monthly_income_eur"])
         g.add((obs, LH.basedOnSource, source))
 
         if pd.notna(row.get("notes")):
-            g.add((obs, RDFS.comment, Literal(str(row["notes"]), lang="en")))
+            g.add((obs, RDFS.comment, Literal(str(row["notes"]).strip(), lang="en")))
 
     # Rent observations
     for _, row in rents.iterrows():
@@ -175,19 +186,21 @@ def main() -> None:
         g.add((obs, LH.basedOnSource, source))
 
         if pd.notna(row.get("notes")):
-            g.add((obs, RDFS.comment, Literal(str(row["notes"]), lang="en")))
+            g.add((obs, RDFS.comment, Literal(str(row["notes"]).strip(), lang="en")))
 
     # Affordability observations
     for _, row in affordability.iterrows():
         obs = uri(f"affordability_observation/{row['observation_id']}")
         district = uri(f"district/{row['district_id']}")
         group = uri(f"group/{row['group_id']}")
+        scenario = uri(f"income_scenario/{row['income_scenario_id']}")
         rent_source = LH[f"source/{row['rent_source_id']}"]
         income_source = LH[f"source/{row['income_source_id']}"]
 
         g.add((obs, RDF.type, LH.AffordabilityObservation))
         g.add((obs, LH.forDistrict, district))
         g.add((obs, LH.forGroup, group))
+        g.add((obs, LH.forIncomeScenario, scenario))
         add_integer(g, obs, LH.inYear, row["year"])
         add_decimal(g, obs, LH.hasOfferRentPerSqm, row["offer_rent_per_sqm"])
         add_decimal(g, obs, LH.hasFlatSizeSqm, row["flat_size_sqm"])
@@ -223,7 +236,7 @@ def main() -> None:
         g.add((location_class, RDF.type, LH.ResidentialLocationClass))
         g.add((location_class, RDFS.label, Literal(str(location_name), lang="de")))
         add_decimal(g, location_class, LH.hasLocationFactor, factor)
-        g.add((location_class, LH.basedOnSource, source_leipzig_mietspiegel))
+        g.add((location_class, LH.basedOnSource, LH["source/leipzig_mietspiegel_2025_2027"]))
 
     # Residential location observations
     for idx, row in residential_locations.iterrows():
@@ -247,7 +260,7 @@ def main() -> None:
         g.add((obs, LH.houseNumber, Literal(str(row["house_number"]))))
         g.add((obs, LH.hasResidentialLocationClass, location_class))
         add_decimal(g, obs, LH.hasLocationFactor, row["location_factor"])
-        g.add((obs, LH.basedOnSource, source_leipzig_mietspiegel))
+        g.add((obs, LH.basedOnSource, LH["source/leipzig_mietspiegel_2025_2027"]))
 
     g.serialize(destination=output_file, format="turtle")
 
