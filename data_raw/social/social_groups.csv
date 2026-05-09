@@ -1,5 +1,2 @@
 group_id,group_label_en,group_label_de,description
-students,Students,Studierende,Students with typical monthly living budget
-apprentices,Apprentices,Auszubildende,Apprentices with assumed monthly net training income
-citizen_benefit,Citizen Benefit Recipients,Bürgergeld-Empfänger:innen,Single household receiving citizen benefit
-median_earners,Median Earners,Medianverdienende,Person with median monthly net income
+students,Students,Studierende,Students living independently in Leipzig
