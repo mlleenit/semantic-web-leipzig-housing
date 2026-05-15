@@ -31,6 +31,7 @@ def main() -> None:
     affordability = pd.read_csv("data_processed/affordability_observations.csv")
     residential_locations = pd.read_csv("data_processed/official_residential_locations.csv")
     housing_stock = pd.read_csv("data_processed/housing_stock_observations.csv")
+    population = pd.read_csv("data_raw/population/population_projection_leipzig.csv")
 
     output_dir = Path("rdf_output")
     output_dir.mkdir(exist_ok=True)
@@ -57,6 +58,9 @@ def main() -> None:
         "HousingStockObservation",
         "ResidentialLocationClass",
         "DataSource",
+        "Region",
+        "PopulationObservation",
+        "PopulationVariant",
     ]
 
     for class_name in classes:
@@ -71,6 +75,8 @@ def main() -> None:
         "forIncomeScenario",
         "basedOnSource",
         "hasResidentialLocationClass",
+        "forRegion",
+        "hasVariant",
     ]
 
     datatype_properties = [
@@ -89,6 +95,7 @@ def main() -> None:
         "houseNumber",
         "hasLocationFactor",
         "hasHousingUnits",
+        "hasPopulation",
     ]
 
     for prop in object_properties + datatype_properties:
@@ -130,6 +137,11 @@ def main() -> None:
     g.add((LH.streetName, RDFS.range, XSD.string))
     g.add((LH.houseNumber, RDFS.range, XSD.string))
 
+    g.add((LH.forRegion, RDFS.range, LH.Region))
+    g.add((LH.hasVariant, RDFS.range, LH.PopulationVariant))
+    g.add((LH.hasPopulation, RDFS.domain, LH.PopulationObservation))
+    g.add((LH.hasPopulation, RDFS.range, XSD.integer))
+
     # Data sources
     sources = [
         (
@@ -157,12 +169,47 @@ def main() -> None:
             "Leipzig housing stock statistics",
             "Official Leipzig statistics on the number of housing units by district for 2020 to 2024.",
         ),
+        (
+            LH["source/sachsen_population_projection_2035"],
+            "7th Regionalized Population Projection for Saxony 2019-2035",
+            "Official population projection for the city of Leipzig published by the Statistical Office of Saxony.",
+        ),
     ]
 
     for source_uri, title, description in sources:
         g.add((source_uri, RDF.type, LH.DataSource))
         g.add((source_uri, DCTERMS.title, Literal(title, lang="en")))
         g.add((source_uri, DCTERMS.description, Literal(description, lang="en")))
+        
+    # Region Leipzig
+    leipzig_region = uri("region/leipzig")
+
+    g.add((leipzig_region, RDF.type, LH.Region))
+    g.add((leipzig_region, RDFS.label, Literal("Leipzig", lang="de")))
+    g.add((leipzig_region, LH.city, Literal("Leipzig", lang="de")))
+    g.add((leipzig_region, LH.country, Literal("Germany", lang="en")))
+
+    # Population variants
+    for variant_id, label in [
+        ("variant_1", "Upper population projection variant"),
+        ("variant_2", "Lower population projection variant"),
+    ]:
+        variant = uri(f"population_variant/{variant_id}")
+        g.add((variant, RDF.type, LH.PopulationVariant))
+        g.add((variant, RDFS.label, Literal(label, lang="en")))
+
+    # Population observations
+    for _, row in population.iterrows():
+        obs = uri(f"population_observation/leipzig_{row['year']}_{row['variant']}")
+        variant = uri(f"population_variant/{row['variant']}")
+        source = LH["source/sachsen_population_projection_2035"]
+
+        g.add((obs, RDF.type, LH.PopulationObservation))
+        g.add((obs, LH.forRegion, leipzig_region))
+        g.add((obs, LH.hasVariant, variant))
+        add_integer(g, obs, LH.inYear, row["year"])
+        add_integer(g, obs, LH.hasPopulation, row["population"])
+        g.add((obs, LH.basedOnSource, source))
 
     # Districts
     for _, row in districts.iterrows():

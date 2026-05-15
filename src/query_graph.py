@@ -145,12 +145,50 @@ ORDER BY DESC(?housingUnits)
 LIMIT 15
 """
 
+    query_7 = prefixes + """
+SELECT ?year ?variantLabel ?population
+WHERE {
+    ?obs a lh:PopulationObservation ;
+         lh:inYear ?year ;
+         lh:hasPopulation ?population ;
+         lh:hasVariant ?variant .
+
+    ?variant rdfs:label ?variantLabel .
+}
+ORDER BY ?year ?variantLabel
+"""
+
+    query_8 = prefixes + """
+SELECT ?districtLabel ?stress ?status ?population2035
+WHERE {
+    ?affObs a lh:AffordabilityObservation ;
+         lh:forDistrict ?district ;
+         lh:forGroup <https://example.org/leipzig-housing/group/students> ;
+         lh:forIncomeScenario <https://example.org/leipzig-housing/income_scenario/bafog_only> ;
+         lh:hasHousingStressScore ?stress ;
+         lh:hasAffordabilityStatus ?status .
+
+    ?district rdfs:label ?districtLabel .
+
+    ?popObs a lh:PopulationObservation ;
+            lh:inYear 2035 ;
+            lh:hasPopulation ?population2035 ;
+            lh:hasVariant <https://example.org/leipzig-housing/population_variant/variant_1> .
+
+    FILTER(LANG(?districtLabel) = "de")
+}
+ORDER BY DESC(?stress)
+LIMIT 15
+"""
+
     run_query(g, "Query 1: Student affordability by district and income scenario", query_1)
     run_query(g, "Query 2: Critical districts by scenario", query_2)
     run_query(g, "Query 3: BAföG vs Minijob comparison (MOST IMPORTANT)", query_3)
     run_query(g, "Query 4: Status distribution per scenario", query_4)
     run_query(g, "Query 5: Residential location classes", query_5)
     run_query(g, "Query 6: Housing stock and student affordability", query_6)
+    run_query(g, "Query 7: Leipzig population projection by variant", query_7)
+    run_query(g, "Query 8: Housing stress and projected Leipzig population growth", query_8)
 
 
 if __name__ == "__main__":
