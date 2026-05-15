@@ -30,6 +30,7 @@ def main() -> None:
     rents = pd.read_csv("data_raw/rents/rent_observations.csv")
     affordability = pd.read_csv("data_processed/affordability_observations.csv")
     residential_locations = pd.read_csv("data_processed/official_residential_locations.csv")
+    housing_stock = pd.read_csv("data_processed/housing_stock_observations.csv")
 
     output_dir = Path("rdf_output")
     output_dir.mkdir(exist_ok=True)
@@ -53,6 +54,7 @@ def main() -> None:
         "IncomeObservation",
         "AffordabilityObservation",
         "ResidentialLocationObservation",
+        "HousingStockObservation",
         "ResidentialLocationClass",
         "DataSource",
     ]
@@ -86,12 +88,47 @@ def main() -> None:
         "streetName",
         "houseNumber",
         "hasLocationFactor",
+        "hasHousingUnits",
     ]
 
     for prop in object_properties + datatype_properties:
         prop_uri = LH[prop]
         g.add((prop_uri, RDF.type, RDF.Property))
         g.add((prop_uri, RDFS.label, Literal(prop, lang="en")))
+
+    # Domain and range definitions
+    # Domains are only used where a property is specific to one observation type.
+    # For shared properties, only ranges are defined to avoid unintended RDFS inference.
+
+    g.add((LH.forDistrict, RDFS.range, LH.District))
+    g.add((LH.forGroup, RDFS.range, LH.SocialGroup))
+    g.add((LH.forIncomeScenario, RDFS.range, LH.IncomeScenario))
+    g.add((LH.basedOnSource, RDFS.range, LH.DataSource))
+
+    g.add((LH.hasResidentialLocationClass, RDFS.domain, LH.ResidentialLocationObservation))
+    g.add((LH.hasResidentialLocationClass, RDFS.range, LH.ResidentialLocationClass))
+
+    g.add((LH.hasHousingStressScore, RDFS.domain, LH.AffordabilityObservation))
+    g.add((LH.hasHousingStressScore, RDFS.range, XSD.decimal))
+
+    g.add((LH.hasAffordabilityStatus, RDFS.domain, LH.AffordabilityObservation))
+    g.add((LH.hasAffordabilityStatus, RDFS.range, XSD.string))
+
+    g.add((LH.hasOfferRentPerSqm, RDFS.range, XSD.decimal))
+    g.add((LH.hasFlatSizeSqm, RDFS.range, XSD.decimal))
+    g.add((LH.hasUtilities, RDFS.range, XSD.decimal))
+    g.add((LH.hasWarmRent, RDFS.range, XSD.decimal))
+    g.add((LH.hasMonthlyIncome, RDFS.range, XSD.decimal))
+    g.add((LH.hasLocationFactor, RDFS.range, XSD.decimal))
+    g.add((LH.inYear, RDFS.range, XSD.integer))
+    g.add((LH.hasHousingUnits, RDFS.domain, LH.HousingStockObservation))
+    g.add((LH.hasHousingUnits, RDFS.range, XSD.integer))
+
+    g.add((LH.districtName, RDFS.range, XSD.string))
+    g.add((LH.city, RDFS.range, XSD.string))
+    g.add((LH.country, RDFS.range, XSD.string))
+    g.add((LH.streetName, RDFS.range, XSD.string))
+    g.add((LH.houseNumber, RDFS.range, XSD.string))
 
     # Data sources
     sources = [
@@ -114,6 +151,11 @@ def main() -> None:
             LH["source/leipzig_mietspiegel_2025_2027"],
             "Leipziger Mietspiegel 2025-2027",
             "Official qualified rent index and residential location classification by the City of Leipzig.",
+        ),
+        (
+            LH["source/leipzig_housing_stock"],
+            "Leipzig housing stock statistics",
+            "Official Leipzig statistics on the number of housing units by district for 2020 to 2024.",
         ),
     ]
 
@@ -187,6 +229,18 @@ def main() -> None:
 
         if pd.notna(row.get("notes")):
             g.add((obs, RDFS.comment, Literal(str(row["notes"]).strip(), lang="en")))
+
+    # Housing stock observations
+    for _, row in housing_stock.iterrows():
+        obs = uri(f"housing_stock_observation/{row['district_id']}_{row['year']}")
+        district = uri(f"district/{row['district_id']}")
+        source = LH[f"source/{row['source_id']}"]
+
+        g.add((obs, RDF.type, LH.HousingStockObservation))
+        g.add((obs, LH.forDistrict, district))
+        add_integer(g, obs, LH.inYear, row["year"])
+        add_integer(g, obs, LH.hasHousingUnits, row["housing_units"])
+        g.add((obs, LH.basedOnSource, source))        
 
     # Affordability observations
     for _, row in affordability.iterrows():

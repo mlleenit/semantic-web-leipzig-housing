@@ -122,11 +122,35 @@ GROUP BY ?locationClassLabel ?factor
 ORDER BY DESC(?addressCount)
 """
 
+    query_6 = prefixes + """
+SELECT ?districtLabel ?housingUnits ?stress ?status
+WHERE {
+    ?stockObs a lh:HousingStockObservation ;
+         lh:forDistrict ?district ;
+         lh:inYear 2024 ;
+         lh:hasHousingUnits ?housingUnits .
+
+    ?affObs a lh:AffordabilityObservation ;
+         lh:forDistrict ?district ;
+         lh:forGroup <https://example.org/leipzig-housing/group/students> ;
+         lh:forIncomeScenario <https://example.org/leipzig-housing/income_scenario/bafog_only> ;
+         lh:hasHousingStressScore ?stress ;
+         lh:hasAffordabilityStatus ?status .
+
+    ?district rdfs:label ?districtLabel .
+
+    FILTER(LANG(?districtLabel) = "de")
+}
+ORDER BY DESC(?housingUnits)
+LIMIT 15
+"""
+
     run_query(g, "Query 1: Student affordability by district and income scenario", query_1)
     run_query(g, "Query 2: Critical districts by scenario", query_2)
     run_query(g, "Query 3: BAföG vs Minijob comparison (MOST IMPORTANT)", query_3)
     run_query(g, "Query 4: Status distribution per scenario", query_4)
     run_query(g, "Query 5: Residential location classes", query_5)
+    run_query(g, "Query 6: Housing stock and student affordability", query_6)
 
 
 if __name__ == "__main__":

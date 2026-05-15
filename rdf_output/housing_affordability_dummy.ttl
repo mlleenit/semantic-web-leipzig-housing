@@ -1,113 +1,76 @@
 @prefix lh: <https://example.org/leipzig-housing/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-lh:Connewitz_Apprentices_Affordability a lh:AffordabilityObservation ;
-    lh:forDistrict lh:Connewitz ;
-    lh:forGroup lh:Apprentices ;
-    lh:hasAffordabilityStatus "not_affordable" ;
-    lh:hasHousingStressScore 0.573 ;
-    lh:hasMonthlyIncome 900.0 ;
-    lh:hasWarmRent30sqm 516.0 .
+<https://example.org/leipzig-housing/affordability_observation/connewitz_students_bafog_only> a lh:AffordabilityObservation ;
+    lh:forDistrict <https://example.org/leipzig-housing/district/connewitz> ;
+    lh:forGroup <https://example.org/leipzig-housing/group/students> ;
+    lh:forIncomeScenario <https://example.org/leipzig-housing/income_scenario/bafog_only> ;
+    lh:hasAffordabilityStatus "critical"@en ;
+    lh:hasHousingStressScore 0.442 ;
+    lh:hasMonthlyIncome 992.0 ;
+    lh:hasWarmRent 438.6 .
 
-lh:Connewitz_CitizenBenefitRecipients_Affordability a lh:AffordabilityObservation ;
-    lh:forDistrict lh:Connewitz ;
-    lh:forGroup lh:CitizenBenefitRecipients ;
-    lh:hasAffordabilityStatus "not_affordable" ;
-    lh:hasHousingStressScore 0.917 ;
-    lh:hasMonthlyIncome 563.0 ;
-    lh:hasWarmRent30sqm 516.0 .
-
-lh:Connewitz_MedianEarners_Affordability a lh:AffordabilityObservation ;
-    lh:forDistrict lh:Connewitz ;
-    lh:forGroup lh:MedianEarners ;
-    lh:hasAffordabilityStatus "affordable" ;
+<https://example.org/leipzig-housing/affordability_observation/connewitz_students_bafog_plus_minijob> a lh:AffordabilityObservation ;
+    lh:forDistrict <https://example.org/leipzig-housing/district/connewitz> ;
+    lh:forGroup <https://example.org/leipzig-housing/group/students> ;
+    lh:forIncomeScenario <https://example.org/leipzig-housing/income_scenario/bafog_plus_minijob> ;
+    lh:hasAffordabilityStatus "affordable"@en ;
     lh:hasHousingStressScore 0.275 ;
-    lh:hasMonthlyIncome 1877.0 ;
-    lh:hasWarmRent30sqm 516.0 .
+    lh:hasMonthlyIncome 1595.0 ;
+    lh:hasWarmRent 438.6 .
 
-lh:Connewitz_Students_Affordability a lh:AffordabilityObservation ;
-    lh:forDistrict lh:Connewitz ;
-    lh:forGroup lh:Students ;
-    lh:hasAffordabilityStatus "not_affordable" ;
-    lh:hasHousingStressScore 0.52 ;
+<https://example.org/leipzig-housing/affordability_observation/plagwitz_students_bafog_only> a lh:AffordabilityObservation ;
+    lh:forDistrict <https://example.org/leipzig-housing/district/plagwitz> ;
+    lh:forGroup <https://example.org/leipzig-housing/group/students> ;
+    lh:forIncomeScenario <https://example.org/leipzig-housing/income_scenario/bafog_only> ;
+    lh:hasAffordabilityStatus "critical"@en ;
+    lh:hasHousingStressScore 0.445 ;
     lh:hasMonthlyIncome 992.0 ;
-    lh:hasWarmRent30sqm 516.0 .
+    lh:hasWarmRent 441.6 .
 
-lh:Gruenau_Apprentices_Affordability a lh:AffordabilityObservation ;
-    lh:forDistrict lh:Gruenau ;
-    lh:forGroup lh:Apprentices ;
-    lh:hasAffordabilityStatus "critical" ;
-    lh:hasHousingStressScore 0.413 ;
-    lh:hasMonthlyIncome 900.0 ;
-    lh:hasWarmRent30sqm 372.0 .
+<https://example.org/leipzig-housing/affordability_observation/plagwitz_students_bafog_plus_minijob> a lh:AffordabilityObservation ;
+    lh:forDistrict <https://example.org/leipzig-housing/district/plagwitz> ;
+    lh:forGroup <https://example.org/leipzig-housing/group/students> ;
+    lh:forIncomeScenario <https://example.org/leipzig-housing/income_scenario/bafog_plus_minijob> ;
+    lh:hasAffordabilityStatus "affordable"@en ;
+    lh:hasHousingStressScore 0.277 ;
+    lh:hasMonthlyIncome 1595.0 ;
+    lh:hasWarmRent 441.6 .
 
-lh:Gruenau_CitizenBenefitRecipients_Affordability a lh:AffordabilityObservation ;
-    lh:forDistrict lh:Gruenau ;
-    lh:forGroup lh:CitizenBenefitRecipients ;
-    lh:hasAffordabilityStatus "not_affordable" ;
-    lh:hasHousingStressScore 0.661 ;
-    lh:hasMonthlyIncome 563.0 ;
-    lh:hasWarmRent30sqm 372.0 .
-
-lh:Gruenau_MedianEarners_Affordability a lh:AffordabilityObservation ;
-    lh:forDistrict lh:Gruenau ;
-    lh:forGroup lh:MedianEarners ;
-    lh:hasAffordabilityStatus "affordable" ;
-    lh:hasHousingStressScore 0.198 ;
-    lh:hasMonthlyIncome 1877.0 ;
-    lh:hasWarmRent30sqm 372.0 .
-
-lh:Gruenau_Students_Affordability a lh:AffordabilityObservation ;
-    lh:forDistrict lh:Gruenau ;
-    lh:forGroup lh:Students ;
-    lh:hasAffordabilityStatus "critical" ;
-    lh:hasHousingStressScore 0.375 ;
+<https://example.org/leipzig-housing/affordability_observation/zentrum_ost_students_bafog_only> a lh:AffordabilityObservation ;
+    lh:forDistrict <https://example.org/leipzig-housing/district/zentrum_ost> ;
+    lh:forGroup <https://example.org/leipzig-housing/group/students> ;
+    lh:forIncomeScenario <https://example.org/leipzig-housing/income_scenario/bafog_only> ;
+    lh:hasAffordabilityStatus "not_affordable"@en ;
+    lh:hasHousingStressScore 0.517 ;
     lh:hasMonthlyIncome 992.0 ;
-    lh:hasWarmRent30sqm 372.0 .
+    lh:hasWarmRent 513.3 .
 
-lh:Plagwitz_Apprentices_Affordability a lh:AffordabilityObservation ;
-    lh:forDistrict lh:Plagwitz ;
-    lh:forGroup lh:Apprentices ;
-    lh:hasAffordabilityStatus "not_affordable" ;
-    lh:hasHousingStressScore 0.603 ;
-    lh:hasMonthlyIncome 900.0 ;
-    lh:hasWarmRent30sqm 543.0 .
+<https://example.org/leipzig-housing/affordability_observation/zentrum_ost_students_bafog_plus_minijob> a lh:AffordabilityObservation ;
+    lh:forDistrict <https://example.org/leipzig-housing/district/zentrum_ost> ;
+    lh:forGroup <https://example.org/leipzig-housing/group/students> ;
+    lh:forIncomeScenario <https://example.org/leipzig-housing/income_scenario/bafog_plus_minijob> ;
+    lh:hasAffordabilityStatus "critical"@en ;
+    lh:hasHousingStressScore 0.322 ;
+    lh:hasMonthlyIncome 1595.0 ;
+    lh:hasWarmRent 513.3 .
 
-lh:Plagwitz_CitizenBenefitRecipients_Affordability a lh:AffordabilityObservation ;
-    lh:forDistrict lh:Plagwitz ;
-    lh:forGroup lh:CitizenBenefitRecipients ;
-    lh:hasAffordabilityStatus "not_affordable" ;
-    lh:hasHousingStressScore 0.964 ;
-    lh:hasMonthlyIncome 563.0 ;
-    lh:hasWarmRent30sqm 543.0 .
+<https://example.org/leipzig-housing/district/connewitz> a lh:District ;
+    rdfs:label "Connewitz"@de .
 
-lh:Plagwitz_MedianEarners_Affordability a lh:AffordabilityObservation ;
-    lh:forDistrict lh:Plagwitz ;
-    lh:forGroup lh:MedianEarners ;
-    lh:hasAffordabilityStatus "affordable" ;
-    lh:hasHousingStressScore 0.289 ;
-    lh:hasMonthlyIncome 1877.0 ;
-    lh:hasWarmRent30sqm 543.0 .
+<https://example.org/leipzig-housing/district/plagwitz> a lh:District ;
+    rdfs:label "Plagwitz"@de .
 
-lh:Plagwitz_Students_Affordability a lh:AffordabilityObservation ;
-    lh:forDistrict lh:Plagwitz ;
-    lh:forGroup lh:Students ;
-    lh:hasAffordabilityStatus "not_affordable" ;
-    lh:hasHousingStressScore 0.547 ;
-    lh:hasMonthlyIncome 992.0 ;
-    lh:hasWarmRent30sqm 543.0 .
+<https://example.org/leipzig-housing/district/zentrum_ost> a lh:District ;
+    rdfs:label "Zentrum-Ost"@de .
 
-lh:Apprentices a lh:SocialGroup .
+<https://example.org/leipzig-housing/income_scenario/bafog_only> a lh:IncomeScenario ;
+    rdfs:label "bafog_only"@en .
 
-lh:CitizenBenefitRecipients a lh:SocialGroup .
+<https://example.org/leipzig-housing/income_scenario/bafog_plus_minijob> a lh:IncomeScenario ;
+    rdfs:label "bafog_plus_minijob"@en .
 
-lh:MedianEarners a lh:SocialGroup .
-
-lh:Students a lh:SocialGroup .
-
-lh:Connewitz a lh:District .
-
-lh:Gruenau a lh:District .
-
-lh:Plagwitz a lh:District .
+<https://example.org/leipzig-housing/group/students> a lh:SocialGroup ;
+    rdfs:label "students"@en .
 
