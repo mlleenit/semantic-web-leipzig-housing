@@ -2,7 +2,7 @@
 
 ## Research Objective
 
-This project analyzes housing affordability in the Leipzig rental market for different social groups.
+The project additionally integrates official demographic projections for Leipzig in order to contextualize future housing market pressure and urban population growth.
 
 Core research question:
 
@@ -153,6 +153,10 @@ Including this group would introduce inconsistencies in the affordability model,
 - BAföG rates (students)  
 - Minijob-Zentrale (student employment income limits)
 
+### Demographic Data
+
+- Official population projection for Leipzig (Statistical Office of Saxony, 2019–2035)
+
 ---
 
 ## Data Pipeline
@@ -210,3 +214,9 @@ In contrast, the Minijob scenario significantly shifts the distribution towards 
 The comparison of the top 15 districts with the highest housing stress further illustrates that although additional income reduces stress levels substantially, central districts such as Zentrum-Ost and Zentrum-Südost remain within the critical range.
 
 This highlights that increased income improves affordability, but does not fully compensate for high rental costs in central urban areas.
+
+The integrated demographic projections additionally indicate continued population growth in Leipzig until 2035. Depending on the projection variant, the population is expected to increase to up to 681,140 inhabitants.
+
+This suggests that housing demand may continue to increase in the future, potentially reinforcing existing affordability pressures in already critical districts.
+
+The integration of demographic projections demonstrates how heterogeneous urban datasets can be semantically connected within a unified RDF-based knowledge graph.
