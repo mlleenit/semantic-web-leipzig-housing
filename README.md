@@ -45,8 +45,42 @@ This enables cross-domain urban analysis through SPARQL queries and RDF-based kn
 - rdflib
 - SPARQL
 - pandas
+- pdfplumber
+- geopandas
+- GeoJSON
+- Open Data datasets
 - matplotlib
 - Jupyter Notebook
+
+---
+
+## Data Processing Pipeline
+
+The project uses reproducible preprocessing pipelines to automatically transform heterogeneous urban datasets into normalized RDF-ready datasets.
+
+The pipeline includes:
+
+- PDF extraction for rental market observations
+- PDF extraction for demographic projections
+- Excel-based extraction of residential location classifications
+- GeoJSON-based extraction of Leipzig district entities
+- Open Data CSV transformation for housing stock observations
+- RDF graph construction using rdflib
+- SPARQL-based semantic analysis
+- Automated analytical visualization
+
+Example pipeline execution:
+
+```bash
+python src/build_districts.py
+python src/build_rent_observations.py
+python src/build_population_projection.py
+python src/build_residential_locations.py
+python src/build_housing_stock_observations.py
+python src/build_affordability.py
+python src/build_rdf_graph.py
+python src/query_graph.py
+```
 
 ---
 

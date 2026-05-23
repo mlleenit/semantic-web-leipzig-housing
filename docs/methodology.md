@@ -6,7 +6,7 @@ The project additionally integrates official demographic projections for Leipzig
 
 Core research question:
 
-> Where in Leipzig is housing no longer affordable for different social groups?
+> Where in Leipzig is housing no longer affordable for students?
 
 The analysis is based on a semantic data integration pipeline combining rental market data, social group modeling and income proxies.
 
@@ -138,24 +138,29 @@ Including this group would introduce inconsistencies in the affordability model,
 ### Rental Data
 
 - Wohnungsboerse Leipzig Mietspiegel 2026 (offer rents per district)
+  https://www.wohnungsboerse.net/mietspiegel-Leipzig/7390
 
 ### Geographic Data
 
-- Leipzig district dataset (63 official districts)  
-  https://www.leipzig.de/mein-stadtteil
+- Official Leipzig Open Data GeoJSON dataset of Leipzig districts (Ortsteile Leipzigs)
+  https://www.leipzig.de/rathaus/unsere-stadt/gebietsgliederung-und-strassennamen/kommunale-gebietsgliederung#c119578
 
 ### Residential Location Data
 
 - Official Leipzig rent index (Wohnlage classification)
+  https://www.leipzig.de/leben-in-leipzig/bauen-und-wohnen/wohnen/mietspiegel
 
 ### Income Data
 
-- BAföG rates (students)  
+- BAföG rates (students)
+  https://www.bafög.de/bafoeg/de/das-bafoeg-alle-infos-auf-einen-blick/foerderungsarten-und-foerderungshoehe/was-sind-bedarfssaetze-und-wie-hoch-sind-sie/was-sind-bedarfssaetze-und-wie-hoch-sind-sie.html  
 - Minijob-Zentrale (student employment income limits)
+  https://www.minijob-zentrale.de/DE/die-minijobs/studenten
 
 ### Demographic Data
 
 - Official population projection for Leipzig (Statistical Office of Saxony, 2019–2035)
+  https://bevoelkerungsmonitor.sachsen.de/download/RBV%20Kreise/rbv-landkreisinfo_kreisfreie-stadt_leipzig.pdf
 
 ---
 
@@ -169,6 +174,10 @@ Including this group would introduce inconsistencies in the affordability model,
 6. Analytical visualization  
 
 Each district is evaluated under multiple income scenarios, enabling comparative analysis of affordability under different financial conditions.
+
+Several datasets were automatically extracted and transformed from heterogeneous source formats including PDF, Excel, CSV and GeoJSON files using Python preprocessing scripts.
+
+The project intentionally avoids manual transcription of large analytical datasets in order to ensure reproducibility and data consistency.
 
 ---
 
@@ -220,3 +229,5 @@ The integrated demographic projections additionally indicate continued populatio
 This suggests that housing demand may continue to increase in the future, potentially reinforcing existing affordability pressures in already critical districts.
 
 The integration of demographic projections demonstrates how heterogeneous urban datasets can be semantically connected within a unified RDF-based knowledge graph.
+
+The project follows Linked Data principles through URI-based entity modeling and RDF-based semantic integration.
