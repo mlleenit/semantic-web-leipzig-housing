@@ -1,7 +1,8 @@
 import pandas as pd
 
 df = pd.read_excel(
-    "data_raw/geo/Wohnlage_zum_Leipziger_Mietspiegel_2025-2027.xlsx"
+    "data_raw/geo/Wohnlage_zum_Leipziger_Mietspiegel_2025-2027.xlsx",
+    engine="openpyxl",
 )
 
 df = df.rename(

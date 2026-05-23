@@ -19,7 +19,7 @@ def classify_affordability(score: float) -> str:
 
 
 def main() -> None:
-    rents_path = Path("data_raw/rents/rent_observations.csv")
+    rents_path = Path("data_processed/rent_observations.csv")
     income_path = Path("data_raw/income/income_observations.csv")
     output_path = Path("data_processed/affordability_observations.csv")
 

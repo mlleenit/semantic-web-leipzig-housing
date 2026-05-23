@@ -24,14 +24,14 @@ def add_integer(graph: Graph, subject: URIRef, predicate: URIRef, value) -> None
 
 
 def main() -> None:
-    districts = pd.read_csv("data_raw/geo/districts.csv")
+    districts = pd.read_csv("data_processed/districts.csv")
     social_groups = pd.read_csv("data_raw/social/social_groups.csv")
     incomes = pd.read_csv("data_raw/income/income_observations.csv")
-    rents = pd.read_csv("data_raw/rents/rent_observations.csv")
+    rents = pd.read_csv("data_processed/rent_observations.csv")
     affordability = pd.read_csv("data_processed/affordability_observations.csv")
     residential_locations = pd.read_csv("data_processed/official_residential_locations.csv")
     housing_stock = pd.read_csv("data_processed/housing_stock_observations.csv")
-    population = pd.read_csv("data_raw/population/population_projection_leipzig.csv")
+    population = pd.read_csv("data_processed/population_projection_leipzig.csv")
 
     output_dir = Path("rdf_output")
     output_dir.mkdir(exist_ok=True)
