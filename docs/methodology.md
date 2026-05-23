@@ -162,6 +162,11 @@ Including this group would introduce inconsistencies in the affordability model,
 - Official population projection for Leipzig (Statistical Office of Saxony, 2019–2035)
   https://bevoelkerungsmonitor.sachsen.de/download/RBV%20Kreise/rbv-landkreisinfo_kreisfreie-stadt_leipzig.pdf
 
+### Housing Stock Data
+
+- Official Leipzig Open Data housing stock dataset  
+  https://opendata.leipzig.de/de/dataset/wohnungsbestand-jahreszahlen-1/resource/ddb3bf92-2960-4b83-b2ab-a670b959eab7 
+
 ---
 
 ## Data Pipeline
