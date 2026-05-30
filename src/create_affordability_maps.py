@@ -144,12 +144,6 @@ def create_bafog_only_map() -> None:
 
     merged = districts.merge(bafog_data, on="district_id", how="left")
 
-    #merged["geometry"] = (
-    #    merged.geometry
-    #    .buffer(25)
-    #    .buffer(-25)
-    #)
-
     print("\n=== DEBUGGING DISTRICT IDS ===")
 
     geo_ids = set(districts["district_id"])
@@ -171,22 +165,43 @@ def create_bafog_only_map() -> None:
 
     fig, ax = plt.subplots(figsize=(10, 12))
 
+    city_outline = merged.dissolve()
+
+    # 1. Weißer Außen-Halo zuerst, unter der Karte
+    city_outline.boundary.plot(
+        ax=ax,
+        color="white",
+        linewidth=50,
+        zorder=0,
+    )
+
+    # 2. Danach normale Karte darüber
     merged.plot(
         color=merged["affordability_status"].map(COLORS).fillna("#DDDDDD"),
         edgecolor=(1, 1, 1, 0.35),
         linewidth=0.7,
         ax=ax,
+        zorder=1,
     )
 
     merged["city_district"] = merged["district_id"].map(CITY_DISTRICT_MAPPING)
 
     city_district_borders = merged.dissolve(by="city_district")
 
+    # 3. Stadtbezirksgrenzen wie bisher
     city_district_borders.boundary.plot(
         ax=ax,
         color="#2C2C63",
-        linewidth=1.86, 
+        linewidth=1.86,
         zorder=10,
+    )
+
+    # 4. Lila Außenrand wieder oben drauf
+    city_outline.boundary.plot(
+        ax=ax,
+        color="#2C2C63",
+        linewidth=1.86,
+        zorder=20,
     )
 
     ax.axis("off")
