@@ -144,6 +144,12 @@ def create_bafog_only_map() -> None:
 
     merged = districts.merge(bafog_data, on="district_id", how="left")
 
+    #merged["geometry"] = (
+    #    merged.geometry
+    #    .buffer(25)
+    #    .buffer(-25)
+    #)
+
     print("\n=== DEBUGGING DISTRICT IDS ===")
 
     geo_ids = set(districts["district_id"])
@@ -167,8 +173,8 @@ def create_bafog_only_map() -> None:
 
     merged.plot(
         color=merged["affordability_status"].map(COLORS).fillna("#DDDDDD"),
-        edgecolor="white",
-        linewidth=0.6,
+        edgecolor=(1, 1, 1, 0.35),
+        linewidth=0.7,
         ax=ax,
     )
 
@@ -179,7 +185,7 @@ def create_bafog_only_map() -> None:
     city_district_borders.boundary.plot(
         ax=ax,
         color="#2C2C63",
-        linewidth=2.2,
+        linewidth=1.86, 
         zorder=10,
     )
 
