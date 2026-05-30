@@ -45,6 +45,81 @@ COLORS = {
     "structurally_excluded": "#2C2C63",
 }
 
+CITY_DISTRICT_MAPPING = {
+    "zentrum": "Mitte",
+    "zentrum_nord": "Mitte",
+    "zentrum_nordwest": "Mitte",
+    "zentrum_ost": "Mitte",
+    "zentrum_sued": "Mitte",
+    "zentrum_suedost": "Mitte",
+    "zentrum_west": "Mitte",
+
+    "gohlis_nord": "Nord",
+    "gohlis_mitte": "Nord",
+    "gohlis_sued": "Nord",
+    "eutritzsch": "Nord",
+    "seehausen": "Nord",
+    "wiederitzsch": "Nord",
+
+    "mockau_nord": "Nordost",
+    "mockau_sued": "Nordost",
+    "plaussig_portitz": "Nordost",
+    "schoenefeld_abtnaundorf": "Nordost",
+    "schoenefeld_ost": "Nordost",
+    "thekla": "Nordost",
+
+    "althen_kleinpoesna": "Ost",
+    "anger_crottendorf": "Ost",
+    "baalsdorf": "Ost",
+    "engelsdorf": "Ost",
+    "heiterblick": "Ost",
+    "moelkau": "Ost",
+    "neustadt_neuschoenefeld": "Ost",
+    "paunsdorf": "Ost",
+    "sellerhausen_stuenz": "Ost",
+    "volkmarsdorf": "Ost",
+
+    "holzhausen": "Suedost",
+    "liebertwolkwitz": "Suedost",
+    "meusdorf": "Suedost",
+    "probstheida": "Suedost",
+    "reudnitz_thonberg": "Suedost",
+    "stoetteritz": "Suedost",
+
+    "connewitz": "Sued",
+    "doelitz_doesen": "Sued",
+    "loessnig": "Sued",
+    "marienbrunn": "Sued",
+    "suedvorstadt": "Sued",
+
+    "grosszschocher": "Suedwest",
+    "hartmannsdorf_knautnaundorf": "Suedwest",
+    "kleinzschocher": "Suedwest",
+    "knautkleeberg_knauthain": "Suedwest",
+    "plagwitz": "Suedwest",
+    "schleussig": "Suedwest",
+
+    "gruenau_nord": "West",
+    "gruenau_mitte": "West",
+    "gruenau_ost": "West",
+    "gruenau_siedlung": "West",
+    "lausen_gruenau": "West",
+    "miltitz": "West",
+    "schoenau": "West",
+
+    "burghausen_rueckmarsdorf": "Altwest",
+    "boehlitz_ehrenberg": "Altwest",
+    "leutzsch": "Altwest",
+    "lindenau": "Altwest",
+    "neulindenau": "Altwest",
+    "altlindenau": "Altwest",
+
+    "lindenthal": "Nordwest",
+    "luetzschena_stahmeln": "Nordwest",
+    "moeckern": "Nordwest",
+    "wahren": "Nordwest",
+}
+
 LABELS = {
     "affordable": "Leistbar",
     "critical": "Kritisch",
@@ -95,6 +170,17 @@ def create_bafog_only_map() -> None:
         edgecolor="white",
         linewidth=0.6,
         ax=ax,
+    )
+
+    merged["city_district"] = merged["district_id"].map(CITY_DISTRICT_MAPPING)
+
+    city_district_borders = merged.dissolve(by="city_district")
+
+    city_district_borders.boundary.plot(
+        ax=ax,
+        color="#2C2C63",
+        linewidth=2.2,
+        zorder=10,
     )
 
     ax.axis("off")
