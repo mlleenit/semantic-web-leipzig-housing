@@ -262,6 +262,14 @@ This indicates that student housing stress cannot be explained by population den
 
 This suggests that student housing affordability is not determined by density alone, but by the interaction of centrality, rental prices and available income. Population density therefore serves as a useful contextual indicator, but not as a standalone explanation for affordability pressure.
 
+To further examine the relationship between urban structure and affordability, a correlation analysis was conducted using district-level population density, household counts and housing stress scores.
+
+The results show only weak positive correlations between housing stress and population density (Spearman ρ = 0.19) as well as between housing stress and the number of households (Spearman ρ = 0.28).
+
+These findings indicate that student housing stress in Leipzig cannot be explained by population density or district size alone. While denser and larger districts tend to exhibit slightly higher housing stress, the relationships remain weak.
+
+This suggests that factors such as centrality, residential location quality and local rent levels play a substantially larger role in determining affordability outcomes than urban density itself.
+
 The integrated demographic projections additionally indicate continued population growth in Leipzig until 2035. Depending on the projection variant, the population is expected to increase to up to 681,140 inhabitants.
 
 This suggests that housing demand may continue to increase in the future, potentially reinforcing existing affordability pressures in already critical districts.
