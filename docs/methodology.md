@@ -4,6 +4,8 @@
 
 The project additionally integrates official demographic projections for Leipzig in order to contextualize future housing market pressure and urban population growth.
 
+In addition, district-level population density data is integrated to examine whether densely populated districts also show high student housing stress.
+
 Core research question:
 
 > Where in Leipzig is housing no longer affordable for students?
@@ -180,6 +182,9 @@ Including this group would introduce inconsistencies in the affordability model,
 - Official population projection for Leipzig (Statistical Office of Saxony, 2019–2035)
   https://bevoelkerungsmonitor.sachsen.de/download/RBV%20Kreise/rbv-landkreisinfo_kreisfreie-stadt_leipzig.pdf
 
+- Official Leipzig Open Data population density by district dataset (2004–2025)
+  https://statistik.leipzig.de/statdist/table.aspx?cat=2&rub=9&item=214
+
 ### Housing Stock Data
 
 - Official Leipzig Open Data housing stock dataset  
@@ -231,6 +236,10 @@ The analysis reveals a clear pattern of housing affordability constraints for st
 
 In the base scenario (BAföG only), all districts fall into at least the "critical" affordability range, with several central districts reaching "not affordable" levels. In particular, districts such as Zentrum-Ost, Zentrum-Südost and Zentrum-Nord exhibit housing stress scores above 0.5, indicating severe financial pressure.
 
+The SPARQL-based household analysis further shows that the ten districts classified as not affordable in the BAföG-only scenario contain 58,444 households. This corresponds to approximately 16% of all households across Leipzig districts.
+
+The affected districts are primarily concentrated in central and inner-city areas, including Zentrum-Ost, Zentrum-Südost, Zentrum-Süd and Zentrum-West. This indicates that affordability constraints are not limited to isolated locations, but affect a substantial share of Leipzig's urban residential structure.
+
 When introducing additional income through a Minijob, affordability improves significantly across all districts. The majority of districts shift into the "affordable" category, demonstrating the strong impact of increased income on housing stress.
 
 However, the results also show that even with additional income, certain central districts remain problematic. For example, Zentrum-Ost and Zentrum-Südost still fall into the "critical" category.
@@ -246,6 +255,12 @@ In contrast, the Minijob scenario significantly shifts the distribution towards 
 The comparison of the top 15 districts with the highest housing stress further illustrates that although additional income reduces stress levels substantially, central districts such as Zentrum-Ost and Zentrum-Südost remain within the critical range.
 
 This highlights that increased income improves affordability, but does not fully compensate for high rental costs in central urban areas.
+
+The integration of district-level population density data provides an additional perspective on housing pressure. In the BAföG-only scenario, highly dense districts such as Neustadt-Neuschönefeld, Gohlis-Mitte and Volkmarsdorf fall into the critical affordability range. At the same time, several central districts with lower population density, including Zentrum-Nord, Zentrum-West and Zentrum-Süd, are classified as not affordable.
+
+This indicates that student housing stress cannot be explained by population density alone. While density may contribute to housing market pressure, centrality and rental prices appear to have a stronger influence on affordability outcomes in the BAföG-only scenario.
+
+This suggests that student housing affordability is not determined by density alone, but by the interaction of centrality, rental prices and available income. Population density therefore serves as a useful contextual indicator, but not as a standalone explanation for affordability pressure.
 
 The integrated demographic projections additionally indicate continued population growth in Leipzig until 2035. Depending on the projection variant, the population is expected to increase to up to 681,140 inhabitants.
 

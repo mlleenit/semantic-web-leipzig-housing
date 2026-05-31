@@ -159,8 +159,13 @@ ORDER BY ?year ?variantLabel
 """
 
     query_8 = prefixes + """
-SELECT ?districtLabel ?stress ?status ?population2035
+SELECT ?districtLabel ?density2024 ?stress ?status
 WHERE {
+    ?densityObs a lh:PopulationDensityObservation ;
+         lh:forDistrict ?district ;
+         lh:inYear 2024 ;
+         lh:hasPopulationDensity ?density2024 .
+
     ?affObs a lh:AffordabilityObservation ;
          lh:forDistrict ?district ;
          lh:forGroup <https://example.org/leipzig-housing/group/students> ;
@@ -170,15 +175,37 @@ WHERE {
 
     ?district rdfs:label ?districtLabel .
 
-    ?popObs a lh:PopulationObservation ;
-            lh:inYear 2035 ;
-            lh:hasPopulation ?population2035 ;
-            lh:hasVariant <https://example.org/leipzig-housing/population_variant/variant_1> .
-
     FILTER(LANG(?districtLabel) = "de")
 }
-ORDER BY DESC(?stress)
+ORDER BY DESC(?density2024)
 LIMIT 15
+"""
+
+    query_9 = prefixes + """
+SELECT
+    (SUM(?households) AS ?affectedHouseholds)
+WHERE {
+    ?affObs a lh:AffordabilityObservation ;
+        lh:forDistrict ?district ;
+        lh:forGroup <https://example.org/leipzig-housing/group/students> ;
+        lh:forIncomeScenario <https://example.org/leipzig-housing/income_scenario/bafog_only> ;
+        lh:hasAffordabilityStatus "not_affordable"@en .
+
+    ?householdObs a lh:HouseholdObservation ;
+        lh:forDistrict ?district ;
+        lh:inYear 2025 ;
+        lh:hasHouseholds ?households .
+}
+"""
+
+    query_10 = prefixes + """
+SELECT
+    (SUM(?households) AS ?totalHouseholds)
+WHERE {
+    ?householdObs a lh:HouseholdObservation ;
+        lh:inYear 2025 ;
+        lh:hasHouseholds ?households .
+}
 """
 
     run_query(g, "Query 1: Student affordability by district and income scenario", query_1)
@@ -188,7 +215,9 @@ LIMIT 15
     run_query(g, "Query 5: Residential location classes", query_5)
     run_query(g, "Query 6: Housing stock and student affordability", query_6)
     run_query(g, "Query 7: Leipzig population projection by variant", query_7)
-    run_query(g, "Query 8: Housing stress and projected Leipzig population growth", query_8)
+    run_query(g, "Query 8: Population density and student housing stress", query_8)
+    run_query(g, "Query 9: Households in not affordable districts", query_9)
+    run_query(g, "Query 10: Total households in Leipzig districts", query_10)
 
 
 if __name__ == "__main__":

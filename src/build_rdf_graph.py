@@ -23,6 +23,20 @@ def add_integer(graph: Graph, subject: URIRef, predicate: URIRef, value) -> None
     graph.add((subject, predicate, Literal(int(value), datatype=XSD.integer)))
 
 
+def normalize_district_id(name: str) -> str:
+    return (
+        str(name)
+        .lower()
+        .strip()
+        .replace("ä", "ae")
+        .replace("ö", "oe")
+        .replace("ü", "ue")
+        .replace("ß", "ss")
+        .replace("-", "_")
+        .replace(" ", "_")
+    )
+
+
 def main() -> None:
     districts = pd.read_csv("data_processed/districts.csv")
     social_groups = pd.read_csv("data_raw/social/social_groups.csv")
@@ -32,6 +46,8 @@ def main() -> None:
     residential_locations = pd.read_csv("data_processed/official_residential_locations.csv")
     housing_stock = pd.read_csv("data_processed/housing_stock_observations.csv")
     population = pd.read_csv("data_processed/population_projection_leipzig.csv")
+    population_density = pd.read_csv("data_raw/population/Bevölkerungsbestand_Einwohnerdichte_Ortsteile.csv")
+    households = pd.read_csv("data_raw/population/Bevölkerungsbestand_Personenhaushalte.csv")
 
     output_dir = Path("rdf_output")
     output_dir.mkdir(exist_ok=True)
@@ -46,7 +62,6 @@ def main() -> None:
     g.bind("dcterms", DCTERMS)
     g.bind("schema", SCHEMA)
 
-    # Classes
     classes = [
         "District",
         "SocialGroup",
@@ -61,6 +76,8 @@ def main() -> None:
         "Region",
         "PopulationObservation",
         "PopulationVariant",
+        "PopulationDensityObservation",
+        "HouseholdObservation",
     ]
 
     for class_name in classes:
@@ -68,7 +85,6 @@ def main() -> None:
         g.add((class_uri, RDF.type, RDFS.Class))
         g.add((class_uri, RDFS.label, Literal(class_name, lang="en")))
 
-    # Properties
     object_properties = [
         "forDistrict",
         "forGroup",
@@ -96,16 +112,14 @@ def main() -> None:
         "hasLocationFactor",
         "hasHousingUnits",
         "hasPopulation",
+        "hasPopulationDensity",
+        "hasHouseholds",
     ]
 
     for prop in object_properties + datatype_properties:
         prop_uri = LH[prop]
         g.add((prop_uri, RDF.type, RDF.Property))
         g.add((prop_uri, RDFS.label, Literal(prop, lang="en")))
-
-    # Domain and range definitions
-    # Domains are only used where a property is specific to one observation type.
-    # For shared properties, only ranges are defined to avoid unintended RDFS inference.
 
     g.add((LH.forDistrict, RDFS.range, LH.District))
     g.add((LH.forGroup, RDFS.range, LH.SocialGroup))
@@ -128,8 +142,15 @@ def main() -> None:
     g.add((LH.hasMonthlyIncome, RDFS.range, XSD.decimal))
     g.add((LH.hasLocationFactor, RDFS.range, XSD.decimal))
     g.add((LH.inYear, RDFS.range, XSD.integer))
+
     g.add((LH.hasHousingUnits, RDFS.domain, LH.HousingStockObservation))
     g.add((LH.hasHousingUnits, RDFS.range, XSD.integer))
+
+    g.add((LH.hasPopulation, RDFS.domain, LH.PopulationObservation))
+    g.add((LH.hasPopulation, RDFS.range, XSD.integer))
+
+    g.add((LH.hasPopulationDensity, RDFS.domain, LH.PopulationDensityObservation))
+    g.add((LH.hasPopulationDensity, RDFS.range, XSD.decimal))
 
     g.add((LH.districtName, RDFS.range, XSD.string))
     g.add((LH.city, RDFS.range, XSD.string))
@@ -139,10 +160,7 @@ def main() -> None:
 
     g.add((LH.forRegion, RDFS.range, LH.Region))
     g.add((LH.hasVariant, RDFS.range, LH.PopulationVariant))
-    g.add((LH.hasPopulation, RDFS.domain, LH.PopulationObservation))
-    g.add((LH.hasPopulation, RDFS.range, XSD.integer))
 
-    # Data sources
     sources = [
         (
             LH["source/wohnungsboerse_2026"],
@@ -174,14 +192,23 @@ def main() -> None:
             "7th Regionalized Population Projection for Saxony 2019-2035",
             "Official population projection for the city of Leipzig published by the Statistical Office of Saxony.",
         ),
+        (
+            LH["source/leipzig_population_density_districts"],
+            "Leipzig population density by district",
+            "Official Leipzig statistics on population density by district from 2004 to 2025.",
+        ),
+        (
+            LH["source/leipzig_households_districts"],
+            "Leipzig households by district",
+            "Official Leipzig statistics on private households by district from 2006 to 2025.",
+        ),
     ]
 
     for source_uri, title, description in sources:
         g.add((source_uri, RDF.type, LH.DataSource))
         g.add((source_uri, DCTERMS.title, Literal(title, lang="en")))
         g.add((source_uri, DCTERMS.description, Literal(description, lang="en")))
-        
-    # Region Leipzig
+
     leipzig_region = uri("region/leipzig")
 
     g.add((leipzig_region, RDF.type, LH.Region))
@@ -189,7 +216,6 @@ def main() -> None:
     g.add((leipzig_region, LH.city, Literal("Leipzig", lang="de")))
     g.add((leipzig_region, LH.country, Literal("Germany", lang="en")))
 
-    # Population variants
     for variant_id, label in [
         ("variant_1", "Upper population projection variant"),
         ("variant_2", "Lower population projection variant"),
@@ -198,7 +224,6 @@ def main() -> None:
         g.add((variant, RDF.type, LH.PopulationVariant))
         g.add((variant, RDFS.label, Literal(label, lang="en")))
 
-    # Population observations
     for _, row in population.iterrows():
         obs = uri(f"population_observation/leipzig_{row['year']}_{row['variant']}")
         variant = uri(f"population_variant/{row['variant']}")
@@ -211,7 +236,6 @@ def main() -> None:
         add_integer(g, obs, LH.hasPopulation, row["population"])
         g.add((obs, LH.basedOnSource, source))
 
-    # Districts
     for _, row in districts.iterrows():
         district = uri(f"district/{row['district_id']}")
         g.add((district, RDF.type, LH.District))
@@ -226,7 +250,76 @@ def main() -> None:
         if pd.notna(row.get("linked_geo_uri")) and str(row.get("linked_geo_uri")).strip():
             g.add((district, RDFS.seeAlso, URIRef(str(row["linked_geo_uri"]).strip())))
 
-    # Social groups
+    year_columns = [
+        column for column in population_density.columns
+        if str(column).isdigit()
+    ]
+
+    valid_district_ids = set(districts["district_id"])
+
+    for _, row in population_density.iterrows():
+        district_id = normalize_district_id(row["Gebiet"])
+
+        if district_id not in valid_district_ids:
+            continue
+
+        district = uri(f"district/{district_id}")
+        source = LH["source/leipzig_population_density_districts"]
+
+        for year in year_columns:
+            value = row[year]
+
+            if pd.isna(value):
+                continue
+
+            value = str(value).replace(",", ".")
+            obs = uri(f"population_density_observation/{district_id}_{year}")
+
+            g.add((obs, RDF.type, LH.PopulationDensityObservation))
+            g.add((obs, LH.forDistrict, district))
+            add_integer(g, obs, LH.inYear, year)
+            add_decimal(g, obs, LH.hasPopulationDensity, value)
+            g.add((obs, LH.basedOnSource, source))
+
+    year_columns = [
+    column for column in households.columns
+    if str(column).isdigit()
+]
+
+    households = households[
+        households["Sachmerkmal"] == "Haushalte insgesamt"
+    ].copy()
+
+    for _, row in households.iterrows():
+        district_id = normalize_district_id(row["Gebiet"])
+
+        if district_id not in valid_district_ids:
+            continue
+
+        district = uri(f"district/{district_id}")
+        source = LH["source/leipzig_households_districts"]
+
+        for year in year_columns:
+            value = row[year]
+
+            if pd.isna(value):
+                continue
+
+            value = (
+                str(value)
+                .replace("\u202f", "")
+                .replace(" ", "")
+                .replace(",", ".")
+            )
+
+            obs = uri(f"household_observation/{district_id}_{year}")
+
+            g.add((obs, RDF.type, LH.HouseholdObservation))
+            g.add((obs, LH.forDistrict, district))
+            add_integer(g, obs, LH.inYear, year)
+            add_integer(g, obs, LH.hasHouseholds, int(float(value)))
+            g.add((obs, LH.basedOnSource, source))        
+
     for _, row in social_groups.iterrows():
         group = uri(f"group/{row['group_id']}")
         g.add((group, RDF.type, LH.SocialGroup))
@@ -234,13 +327,11 @@ def main() -> None:
         g.add((group, RDFS.label, Literal(row["group_label_de"], lang="de")))
         g.add((group, DCTERMS.description, Literal(row["description"], lang="en")))
 
-    # Income scenarios
     for scenario_id in incomes["income_scenario_id"].dropna().unique():
         scenario = uri(f"income_scenario/{scenario_id}")
         g.add((scenario, RDF.type, LH.IncomeScenario))
         g.add((scenario, RDFS.label, Literal(str(scenario_id), lang="en")))
 
-    # Income observations
     for _, row in incomes.iterrows():
         obs = uri(f"income_observation/{row['observation_id']}")
         group = uri(f"group/{row['group_id']}")
@@ -257,7 +348,6 @@ def main() -> None:
         if pd.notna(row.get("notes")):
             g.add((obs, RDFS.comment, Literal(str(row["notes"]).strip(), lang="en")))
 
-    # Rent observations
     for _, row in rents.iterrows():
         obs = uri(f"rent_observation/{row['observation_id']}")
         district = uri(f"district/{row['district_id']}")
@@ -277,7 +367,6 @@ def main() -> None:
         if pd.notna(row.get("notes")):
             g.add((obs, RDFS.comment, Literal(str(row["notes"]).strip(), lang="en")))
 
-    # Housing stock observations
     for _, row in housing_stock.iterrows():
         obs = uri(f"housing_stock_observation/{row['district_id']}_{row['year']}")
         district = uri(f"district/{row['district_id']}")
@@ -287,9 +376,8 @@ def main() -> None:
         g.add((obs, LH.forDistrict, district))
         add_integer(g, obs, LH.inYear, row["year"])
         add_integer(g, obs, LH.hasHousingUnits, row["housing_units"])
-        g.add((obs, LH.basedOnSource, source))        
+        g.add((obs, LH.basedOnSource, source))
 
-    # Affordability observations
     for _, row in affordability.iterrows():
         obs = uri(f"affordability_observation/{row['observation_id']}")
         district = uri(f"district/{row['district_id']}")
@@ -313,24 +401,13 @@ def main() -> None:
         g.add((obs, LH.basedOnSource, rent_source))
         g.add((obs, LH.basedOnSource, income_source))
 
-    # Residential location classes
     for location_name, factor in (
         residential_locations[["residential_location", "location_factor"]]
         .drop_duplicates()
         .sort_values("residential_location")
         .itertuples(index=False)
     ):
-        class_id = (
-            str(location_name)
-            .lower()
-            .replace("ä", "ae")
-            .replace("ö", "oe")
-            .replace("ü", "ue")
-            .replace("ß", "ss")
-            .replace(" - ", "_")
-            .replace(" ", "_")
-            .replace("-", "_")
-        )
+        class_id = normalize_district_id(location_name).replace("_-_", "_")
 
         location_class = uri(f"residential_location_class/{class_id}")
 
@@ -339,19 +416,8 @@ def main() -> None:
         add_decimal(g, location_class, LH.hasLocationFactor, factor)
         g.add((location_class, LH.basedOnSource, LH["source/leipzig_mietspiegel_2025_2027"]))
 
-    # Residential location observations
     for idx, row in residential_locations.iterrows():
-        class_id = (
-            str(row["residential_location"])
-            .lower()
-            .replace("ä", "ae")
-            .replace("ö", "oe")
-            .replace("ü", "ue")
-            .replace("ß", "ss")
-            .replace(" - ", "_")
-            .replace(" ", "_")
-            .replace("-", "_")
-        )
+        class_id = normalize_district_id(row["residential_location"]).replace("_-_", "_")
 
         obs = uri(f"residential_location_observation/{idx + 1}")
         location_class = uri(f"residential_location_class/{class_id}")
