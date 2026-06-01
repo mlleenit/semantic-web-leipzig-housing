@@ -209,6 +209,51 @@ The project intentionally avoids manual transcription of large analytical datase
 
 ---
 
+## RDF Vocabulary and Ontology Visualization
+
+To support semantic integration across heterogeneous datasets, a lightweight RDF vocabulary was developed for the Leipzig Housing Knowledge Graph.
+
+The vocabulary models the core concepts of the project, including districts, rental observations, income observations, affordability observations, residential location classes, housing stock statistics and demographic indicators.
+
+Examples of modeled classes include:
+
+* District
+* Affordability Observation
+* Rent Observation
+* Income Observation
+* Income Scenario
+* Social Group
+* Housing Stock Observation
+* Population Density Observation
+* Household Observation
+* Residential Location Observation
+* Residential Location Class
+* Population Observation
+* Data Source
+
+Relationships between these concepts are represented through RDF properties such as:
+
+* forDistrict
+* forIncomeScenario
+* forGroup
+* usesRentObservation
+* usesIncomeObservation
+* basedOnSource
+
+This semantic model enables the integration of multiple heterogeneous datasets within a unified RDF-based knowledge graph.
+
+The ontology structure was visualized using WebVOWL in order to inspect and validate the semantic relationships between the modeled concepts.
+
+The ontology specification used for the visualization is included in the project repository under `ontology/leipzig_housing_ontology.ttl`.
+
+The resulting knowledge graph contains **457,277 RDF triples** and integrates rental market data, income data, residential location classifications, housing stock statistics, demographic indicators and population projections within a shared semantic framework.
+
+![Ontology visualization of the Leipzig Housing Knowledge Graph](ontology/WebVOWL.png)
+
+*Simplified ontology visualization of the Leipzig Housing Knowledge Graph generated with WebVOWL. The ontology illustrates how rental, income, demographic and housing-related datasets are semantically connected through shared RDF concepts and relationships.*
+
+---
+
 ## Limitations
 
 - Income values are modeled as representative proxies  

@@ -40,20 +40,6 @@ def parse_number(series: pd.Series) -> pd.Series:
     return pd.to_numeric(cleaned, errors="coerce")
 
 
-def find_district_name_column(df: pd.DataFrame) -> str:
-    for col in df.columns:
-        normalized = normalize_name(col)
-        if "district" in normalized and "name" in normalized:
-            return col
-
-    for col in df.columns:
-        normalized = normalize_name(col)
-        if "name" in normalized:
-            return col
-
-    raise ValueError(f"No district name column found. Columns: {df.columns.tolist()}")
-
-
 def load_data() -> pd.DataFrame:
     affordability = pd.read_csv(AFFORDABILITY_PATH)
     districts = pd.read_csv(DISTRICTS_PATH)
@@ -80,7 +66,7 @@ def load_data() -> pd.DataFrame:
     households["name_key"] = households["district_name"].apply(normalize_name)
     households["households"] = parse_number(households["households"])
     households = households.dropna(subset=["households"])
-    
+
     density = density.merge(
         districts[["district_id", "name_key"]],
         on="name_key",
@@ -101,8 +87,18 @@ def load_data() -> pd.DataFrame:
 
     df = (
         bafog
-        .merge(density[["district_id", "population_density"]], on="district_id", how="inner", validate="one_to_one")
-        .merge(households[["district_id", "households"]], on="district_id", how="inner", validate="one_to_one")
+        .merge(
+            density[["district_id", "population_density"]],
+            on="district_id",
+            how="inner",
+            validate="one_to_one",
+        )
+        .merge(
+            households[["district_id", "households"]],
+            on="district_id",
+            how="inner",
+            validate="one_to_one",
+        )
     )
 
     print()
@@ -126,12 +122,24 @@ def calculate_correlations(df: pd.DataFrame) -> pd.DataFrame:
                 "households vs housing_stress_score",
             ],
             "pearson_r": [
-                df["population_density"].corr(df["housing_stress_score"], method="pearson"),
-                df["households"].corr(df["housing_stress_score"], method="pearson"),
+                df["population_density"].corr(
+                    df["housing_stress_score"],
+                    method="pearson",
+                ),
+                df["households"].corr(
+                    df["housing_stress_score"],
+                    method="pearson",
+                ),
             ],
             "spearman_r": [
-                df["population_density"].corr(df["housing_stress_score"], method="spearman"),
-                df["households"].corr(df["housing_stress_score"], method="spearman"),
+                df["population_density"].corr(
+                    df["housing_stress_score"],
+                    method="spearman",
+                ),
+                df["households"].corr(
+                    df["housing_stress_score"],
+                    method="spearman",
+                ),
             ],
         }
     )

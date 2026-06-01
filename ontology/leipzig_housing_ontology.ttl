@@ -1,0 +1,158 @@
+@prefix lh: <https://example.org/leipzig-housing/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+#################################################################
+# Classes
+#################################################################
+
+lh:District rdf:type rdfs:Class ;
+    rdfs:label "District" .
+
+lh:AffordabilityObservation rdf:type rdfs:Class ;
+    rdfs:label "Affordability Observation" .
+
+lh:RentObservation rdf:type rdfs:Class ;
+    rdfs:label "Rent Observation" .
+
+lh:IncomeObservation rdf:type rdfs:Class ;
+    rdfs:label "Income Observation" .
+
+lh:IncomeScenario rdf:type rdfs:Class ;
+    rdfs:label "Income Scenario" .
+
+lh:SocialGroup rdf:type rdfs:Class ;
+    rdfs:label "Social Group" .
+
+lh:HousingStockObservation rdf:type rdfs:Class ;
+    rdfs:label "Housing Stock Observation" .
+
+lh:PopulationDensityObservation rdf:type rdfs:Class ;
+    rdfs:label "Population Density Observation" .
+
+lh:HouseholdObservation rdf:type rdfs:Class ;
+    rdfs:label "Household Observation" .
+
+lh:ResidentialLocationObservation rdf:type rdfs:Class ;
+    rdfs:label "Residential Location Observation" .
+
+lh:ResidentialLocationClass rdf:type rdfs:Class ;
+    rdfs:label "Residential Location Class" .
+
+lh:PopulationObservation rdf:type rdfs:Class ;
+    rdfs:label "Population Projection" .
+
+lh:DataSource rdf:type rdfs:Class ;
+    rdfs:label "Data Source" .
+
+#################################################################
+# Object Properties
+#################################################################
+
+lh:forDistrict rdf:type rdf:Property ;
+    rdfs:domain lh:AffordabilityObservation ;
+    rdfs:range lh:District ;
+    rdfs:label "for district" .
+
+lh:rentForDistrict rdf:type rdf:Property ;
+    rdfs:domain lh:RentObservation ;
+    rdfs:range lh:District ;
+    rdfs:label "for district" .
+
+lh:housingStockForDistrict rdf:type rdf:Property ;
+    rdfs:domain lh:HousingStockObservation ;
+    rdfs:range lh:District ;
+    rdfs:label "for district" .
+
+lh:densityForDistrict rdf:type rdf:Property ;
+    rdfs:domain lh:PopulationDensityObservation ;
+    rdfs:range lh:District ;
+    rdfs:label "for district" .
+
+lh:householdsForDistrict rdf:type rdf:Property ;
+    rdfs:domain lh:HouseholdObservation ;
+    rdfs:range lh:District ;
+    rdfs:label "for district" .
+
+lh:usesRentObservation rdf:type rdf:Property ;
+    rdfs:domain lh:AffordabilityObservation ;
+    rdfs:range lh:RentObservation ;
+    rdfs:label "uses rent data" .
+
+lh:usesIncomeObservation rdf:type rdf:Property ;
+    rdfs:domain lh:AffordabilityObservation ;
+    rdfs:range lh:IncomeObservation ;
+    rdfs:label "uses income data" .
+
+lh:forIncomeScenario rdf:type rdf:Property ;
+    rdfs:domain lh:AffordabilityObservation ;
+    rdfs:range lh:IncomeScenario ;
+    rdfs:label "for income scenario" .
+
+lh:incomeForScenario rdf:type rdf:Property ;
+    rdfs:domain lh:IncomeObservation ;
+    rdfs:range lh:IncomeScenario ;
+    rdfs:label "for income scenario" .
+
+lh:forGroup rdf:type rdf:Property ;
+    rdfs:domain lh:AffordabilityObservation ;
+    rdfs:range lh:SocialGroup ;
+    rdfs:label "for group" .
+
+lh:incomeForGroup rdf:type rdf:Property ;
+    rdfs:domain lh:IncomeObservation ;
+    rdfs:range lh:SocialGroup ;
+    rdfs:label "for group" .
+
+lh:hasResidentialLocationClass rdf:type rdf:Property ;
+    rdfs:domain lh:ResidentialLocationObservation ;
+    rdfs:range lh:ResidentialLocationClass ;
+    rdfs:label "has class" .
+
+lh:basedOnSource rdf:type rdf:Property ;
+    rdfs:range lh:DataSource ;
+    rdfs:label "based on source" .
+
+#################################################################
+# Datatype Properties
+#################################################################
+
+lh:hasHousingStressScore rdf:type rdf:Property ;
+    rdfs:domain lh:AffordabilityObservation ;
+    rdfs:label "housing stress score" .
+
+lh:hasAffordabilityStatus rdf:type rdf:Property ;
+    rdfs:domain lh:AffordabilityObservation ;
+    rdfs:label "affordability status" .
+
+lh:hasWarmRent rdf:type rdf:Property ;
+    rdfs:domain lh:AffordabilityObservation ;
+    rdfs:label "warm rent" .
+
+lh:hasMonthlyIncome rdf:type rdf:Property ;
+    rdfs:domain lh:AffordabilityObservation ;
+    rdfs:label "monthly income" .
+
+lh:hasOfferRentPerSqm rdf:type rdf:Property ;
+    rdfs:domain lh:RentObservation ;
+    rdfs:label "offer rent per sqm" .
+
+lh:hasHousingUnits rdf:type rdf:Property ;
+    rdfs:domain lh:HousingStockObservation ;
+    rdfs:label "housing units" .
+
+lh:hasPopulationDensity rdf:type rdf:Property ;
+    rdfs:domain lh:PopulationDensityObservation ;
+    rdfs:label "population density" .
+
+lh:hasHouseholds rdf:type rdf:Property ;
+    rdfs:domain lh:HouseholdObservation ;
+    rdfs:label "households" .
+
+lh:hasLocationFactor rdf:type rdf:Property ;
+    rdfs:domain lh:ResidentialLocationClass ;
+    rdfs:label "location factor" .
+
+lh:hasPopulation rdf:type rdf:Property ;
+    rdfs:domain lh:PopulationObservation ;
+    rdfs:label "population" .
