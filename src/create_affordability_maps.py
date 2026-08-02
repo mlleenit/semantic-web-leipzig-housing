@@ -39,10 +39,10 @@ def classify_affordability(score: float) -> str:
 
 
 COLORS = {
-    "affordable": "#7C7CC4",
+    "affordable": "#2C2C63",
     "critical": "#7C7CC4", 
     "not_affordable": "#FE9542",
-    "structurally_excluded": "#2C2C63",
+    "structurally_excluded": "#660000",
 }
 
 CITY_DISTRICT_MAPPING = {
@@ -191,17 +191,9 @@ def create_bafog_only_map() -> None:
     # 3. Stadtbezirksgrenzen wie bisher
     city_district_borders.boundary.plot(
         ax=ax,
-        color="#2C2C63",
+        color="#FFFFFF",
         linewidth=1.86,
         zorder=10,
-    )
-
-    # 4. Lila Außenrand wieder oben drauf
-    city_outline.boundary.plot(
-        ax=ax,
-        color="#2C2C63",
-        linewidth=1.86,
-        zorder=20,
     )
 
     ax.axis("off")

@@ -1,5 +1,5 @@
 Graph loaded
-Triples: 444031
+Triples: 457277
 
 ================================================================================
 Query 1: Student affordability by district and income scenario
@@ -219,20 +219,30 @@ Query 7: Leipzig population projection by variant
 2035 | Upper population projection variant | 681140
 
 ================================================================================
-Query 8: Housing stress and projected Leipzig population growth
+Query 8: Population density and student housing stress
 ================================================================================
-Zentrum-Ost | 0.517 | not_affordable | 681140
-Zentrum-Südost | 0.507 | not_affordable | 681140
-Zentrum-Nord | 0.499 | not_affordable | 681140
-Zentrum-West | 0.478 | not_affordable | 681140
-Zentrum-Süd | 0.477 | not_affordable | 681140
-Zentrum-Nordwest | 0.473 | not_affordable | 681140
-Neulindenau | 0.467 | not_affordable | 681140
-Zentrum | 0.467 | not_affordable | 681140
-Hartmannsdorf-Knautnaundorf | 0.461 | not_affordable | 681140
-Eutritzsch | 0.453 | not_affordable | 681140
-Seehausen | 0.449 | critical | 681140
-Stötteritz | 0.449 | critical | 681140
-Engelsdorf | 0.448 | critical | 681140
-Reudnitz-Thonberg | 0.448 | critical | 681140
-Neustadt-Neuschönefeld | 0.447 | critical | 681140
+Neustadt-Neuschönefeld | 16763.52941 | 0.447 | critical
+Gohlis-Mitte | 14068.21705 | 0.436 | critical
+Volkmarsdorf | 13675.0 | 0.424 | critical
+Reudnitz-Thonberg | 11883.25123 | 0.448 | critical
+Grünau-Mitte | 11375.80645 | 0.373 | critical
+Südvorstadt | 11200.0 | 0.442 | critical
+Plagwitz | 10058.95954 | 0.445 | critical
+Grünau-Nord | 9852.631579 | 0.372 | critical
+Gohlis-Süd | 9562.311558 | 0.446 | critical
+Zentrum-Süd | 9313.461538 | 0.477 | not_affordable
+Lindenau | 9054.081633 | 0.426 | critical
+Altlindenau | 8073.94958 | 0.432 | critical
+Zentrum-Nord | 7717.557252 | 0.499 | not_affordable
+Grünau-Ost | 7483.809524 | 0.361 | critical
+Zentrum-West | 7241.212121 | 0.478 | not_affordable
+
+================================================================================
+Query 9: Households in not affordable districts
+================================================================================
+58444
+
+================================================================================
+Query 10: Total households in Leipzig districts
+================================================================================
+365376
